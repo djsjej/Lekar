@@ -62,6 +62,7 @@ def norm(w):
 def script_words(shot, heard):
     """Слова сценария с таймингами из расшифровки: субтитры пишутся как в тексте, время — как сказано."""
     want = re.findall(r"[\w\-]+", shot["text"])
+    heard = [h for h in heard if norm(h["word"])]          # тире и прочие знаки whisper отдаёт как «слова»
     sm = difflib.SequenceMatcher(a=[norm(w) for w in want], b=[norm(h["word"]) for h in heard], autojunk=False)
     out, issues = [], []
     for op, i1, i2, j1, j2 in sm.get_opcodes():
