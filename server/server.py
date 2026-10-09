@@ -203,7 +203,7 @@ class H(BaseHTTPRequestHandler):
 
     def do_POST(self):
         kind, rest, q = self._route()
-        m = re.match(r"^([A-Za-z0-9_-]{1,40})/([a-z]+)$", rest or "")
+        m = re.match(r"^([A-Za-z0-9_-]{1,40})/([a-z_]+)$", rest or "")
         if kind != "run" or not m or m.group(2) not in STEPS:
             return self._send(404, {"error": "не найдено"})
         try:
