@@ -211,9 +211,14 @@ class Run:
         g = self.base / "G"
         plan = json.loads((g / "plan.json").read_text())
         parts, auds, words, t, cuts = [], [], [], 0.0, []
-        for p in plan:
-            # склейка как в оригинале, если речь в неё влезает; иначе — сразу после речи
-            if p.get("orig") and p["speech_end"] + 0.25 <= p["orig"]:
+        for k, p in enumerate(plan):
+            nxt = plan[k + 1] if k + 1 < len(plan) else None
+            # склейка как в оригинале, если речь в неё влезает; иначе — сразу после речи.
+            # Часть плана, за которой идёт продолжение, — до последнего кадра: следующая часть
+            # стартует именно с него, иначе на стыке скачок позы.
+            if nxt is not None and nxt.get("shot") == p.get("shot") and "." in str(nxt["id"]):
+                length = p["clip"]
+            elif p.get("orig") and p["speech_end"] + 0.25 <= p["orig"]:
                 length = p["orig"]
             else:                                   # часть длинного плана или речь не влезла — режем после речи
                 length = min(p["clip"], p["speech_end"] + 0.25)

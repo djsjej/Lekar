@@ -1,0 +1,46 @@
+# Образец 02 «Ноги гудят к вечеру» — свой сценарий, без оригинала.
+# Стартовые кадры: Nano Banana Pro edit, референсы — лист персонажа и интерьер избы из образца 01.
+frames:
+  1: >-
+    Vertical 9:16 photo inside the same rustic log cabin as in the second image: window on the left, clay pots on shelves,
+    bundles of dried herbs hanging from the ceiling, warm daylight. The man from the first image sits on a wooden bench,
+    medium shot, barefoot, both hands on his right calf as if massaging a tired leg, looking into the camera with a kind,
+    slightly concerned expression, mouth slightly open as if speaking. He wears exactly the olive-green T-shirt with the
+    white inscription "ХРЕН ИИШНЫЙ" above the cartoon monkey face, and beige linen trousers rolled up to the knees.
+    Photorealistic, smartphone photo look. No other text on the image.
+  2: >-
+    Vertical 9:16 photo inside the same rustic log cabin as in the second image, warm daylight. The man from the first
+    image lies on his back on a wide wooden bench along the log wall. His head rests on a small linen pillow at the end of
+    the bench nearest to the camera, his face turned toward the camera, calm friendly expression, mouth slightly open as
+    if speaking. He has exactly two legs: both legs together, straight, bare feet, resting on a stack of two linen pillows
+    at the far end of the bench so that his feet are higher than his chest. Anatomically correct, one body, two arms, two
+    legs. Camera at the head end of the bench, slightly above, looking along his body. He wears exactly the olive-green
+    T-shirt with the white inscription "ХРЕН ИИШНЫЙ" above the cartoon monkey face, beige linen trousers. Photorealistic,
+    smartphone photo look. No other text on the image.
+  3: >-
+    Vertical 9:16 photo inside the same rustic log cabin as in the second image, warm daylight. Full-body shot: the man from
+    the first image stands barefoot on the wooden floor behind the rough wooden table, holding the edge of the table with
+    both hands, rising up on his toes with heels lifted off the floor, looking into the camera. His feet and lifted heels are
+    clearly visible next to the table. He wears exactly the olive-green T-shirt with the white inscription "ХРЕН ИИШНЫЙ"
+    above the cartoon monkey face, beige linen trousers. Photorealistic, smartphone photo look. No other text on the image.
+  4: >-
+    Vertical 9:16 medium shot inside the same rustic log cabin as in the second image, window on the left, dried herbs,
+    warm daylight. The man from the first image stands behind the wooden table, waist up, holding a clear glass of plain
+    water in one hand at chest level; on the table in front of him a small wooden salt cellar and a clay jug. He looks into
+    the camera, calm friendly expression, mouth slightly open as if speaking. He wears exactly the olive-green T-shirt with
+    the white inscription "ХРЕН ИИШНЫЙ" above the cartoon monkey face. Photorealistic, smartphone photo look.
+    No other text on the image.
+# Действия для Grok. Только предметы, которые уже есть в кадре.
+grok:
+  1: >-
+    The man sits on the wooden bench, gently massages his tired calf with both hands, then looks up and talks to the camera
+    with natural expressive facial movements. No new objects appear.
+  2: >-
+    The man lies on the bench with his legs resting on the pillows above chest level and stays lying; he turns his head to
+    the camera and talks calmly. His legs stay on the pillows. No new objects appear.
+  3: >-
+    The man holds the edge of the table and slowly rises up on his toes and lowers his heels back to the floor, twice,
+    at a calm steady pace, while talking to the camera. Feet stay visible. No new objects appear.
+  4: >-
+    The man stands behind the table holding the glass of water, small natural head movements and gestures with the free
+    hand, talking to the camera. The salt cellar and the jug stay on the table. No new objects appear.
