@@ -55,6 +55,22 @@ def speech_onset(path, thr=0.06):
     return round(on[0] * 0.02, 3) if len(on) else 0.0
 
 
+def transcript_check(path):
+    """Второе мнение по тексту: gpt-4o-transcribe точнее whisper-1 (тот слышал «бога под» вместо «богат»).
+    Таймингов слов не даёт — их берём из whisper, а текст сверяем по этой расшифровке."""
+    load_env()
+    wav = Path(path).with_suffix(".chk.wav")
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(path), "-vn", "-ac", "1", "-ar", "16000", str(wav)], check=True)
+    out = subprocess.run(["curl", "-sS", "-m", "180", "https://api.openai.com/v1/audio/transcriptions",
+                          "-H", f"Authorization: Bearer {os.environ['OPENAI_API_KEY']}", "-F", "model=gpt-4o-transcribe",
+                          "-F", "language=ru", "-F", f"file=@{wav}"], capture_output=True, text=True).stdout
+    wav.unlink()
+    try:
+        return json.loads(out)["text"]
+    except Exception:
+        return None
+
+
 def norm(w):
     return re.sub(r"[^\w]", "", w.lower().replace("ё", "е")).replace("одну", "1")
 
@@ -89,7 +105,7 @@ def remote(*args):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("sample"); ap.add_argument("--shots", type=int, nargs="*")
-    ap.add_argument("--redo", type=int, nargs="*", default=[]); ap.add_argument("--yes", action="store_true")
+    ap.add_argument("--redo", nargs="*", default=[]); ap.add_argument("--yes", action="store_true")
     a = ap.parse_args()
     sdir = ROOT / "samples" / a.sample
     shots = json.loads((sdir / "shots.json").read_text())
@@ -152,6 +168,12 @@ def main():
         speech_end = heard[-1]["end"] if heard else duration(clip)
         plan.append(dict(id=u["key"], shot=u["shot"]["id"], file=clip.name, clip=round(duration(clip), 3),
                          speech_end=speech_end, orig=u["orig"], delogo=u["shot"].get("delogo"), words=words))
+        if issues:                                  # whisper ошибается — перепроверить точной расшифровкой
+            text2 = transcript_check(clip)
+            if text2:
+                _, issues = script_words(dict(text=u["text"]),
+                                         [dict(word=t, start=0, end=0) for t in re.findall(r"[\w\-]+", text2)])
+                text = text2
         report.append(f"план {u['key']}: «{text}»" + ("".join(f"\n    ! {x}" for x in issues) if issues else "  — текст совпал"))
     (out / "plan.json").write_text(json.dumps(plan, ensure_ascii=False, indent=1))
     print("\n".join(report))
