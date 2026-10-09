@@ -22,37 +22,48 @@ def tts(ledger, cfg, text, out_dir, voice=None, tag="tts"):
 
 
 def _from_chars(chars, starts, ends):
+    """Посимвольные тайминги -> слова. Дефис — часть слова только внутри него («кое-как»), тире — не слово."""
     words, cur, s0, e0 = [], "", None, None
+
+    def flush():
+        w = cur.strip("-")
+        if w:
+            words.append(dict(word=w, start=s0, end=e0))
+
     for c, s, e in zip(chars, starts, ends):
-        if WORD.match(c):
+        if c.isalnum() or (c == "-" and cur):
             if not cur:
                 s0 = s
-            cur += c; e0 = e
+            cur += c
+            if c != "-":
+                e0 = e
         elif cur:
-            words.append(dict(word=cur, start=s0, end=e0)); cur = ""
+            flush(); cur = ""
     if cur:
-        words.append(dict(word=cur, start=s0, end=e0))
+        flush()
     return words
 
 
 def normalize_timestamps(raw):
-    """Разные формы ответа синтеза -> [{word,start,end}] только для слов."""
+    """Разные формы ответа синтеза -> [{word,start,end}] только для слов.
+    Посимвольный ответ может прийти кусками, и слово режется на стыке — куски склеиваются до разбора."""
     if not raw:
         return None
     if isinstance(raw, dict) and "characters" in raw:
-        return _from_chars(raw["characters"], raw["character_start_times_seconds"], raw["character_end_times_seconds"])
+        raw = [raw]
     if isinstance(raw, list) and raw and isinstance(raw[0], dict) and "characters" in raw[0]:
-        out = []
+        ch, st, en = [], [], []
         for chunk in raw:
-            out += _from_chars(chunk["characters"], chunk["character_start_times_seconds"], chunk["character_end_times_seconds"])
-        return out
+            ch += chunk["characters"]; st += chunk["character_start_times_seconds"]; en += chunk["character_end_times_seconds"]
+        return _from_chars(ch, st, en)
     words = []
     for w in raw:
         t = w.get("text", w.get("word", ""))
         s = w.get("start", w.get("start_time"))
         e = w.get("end", w.get("end_time"))
-        for i, tok in enumerate(WORD.findall(t)):
-            words.append(dict(word=tok, start=s, end=e))
+        for tok in WORD.findall(t):
+            if tok.strip("-"):
+                words.append(dict(word=tok.strip("-"), start=s, end=e))
     return words
 
 
