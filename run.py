@@ -156,7 +156,7 @@ class Run:
         fits, parts = {}, []
         for s in self.shots:
             p = self.out / f"shot_{s['id']}.mp4"
-            fits[s["id"]] = video.fit(self.out / f"raw_{s['id']}.mp4", sl[s["id"]]["dur"], p, 1080, 1920, self.cfg["max_stretch"])
+            fits[s["id"]] = video.fit(self.out / f"raw_{s['id']}.mp4", sl[s["id"]]["dur"], p, 1080, 1920, self.cfg["max_stretch"], s.get("delogo"))
             parts.append(p)
         (self.out / "fit.json").write_text(json.dumps(fits, ensure_ascii=False, indent=1))
         tag = f"replica_{self.a.sample}" + ("" if self.a.mode == "A" else "_B")

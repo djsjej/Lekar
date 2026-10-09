@@ -13,6 +13,8 @@ def frames_from_original(original, shots, out_dir):
     out = {}
     for s in shots:
         p = Path(out_dir) / f"frame_{s['id']}.png"
+        if p.exists():                  # кадр уже подготовлен (например, переодетый герой) — не трогать
+            out[s["id"]] = p; continue
         sh("ffmpeg", "-y", "-v", "error", "-ss", str(s["ref_frame_t"]), "-i", original, "-frames:v", "1", p)
         out[s["id"]] = p
     return out
@@ -54,7 +56,7 @@ def animate_action(ledger, endpoint, frame, prompt, seconds, dst, tag):
     return download(r["video"]["url"], dst)
 
 
-def fit(src, need, dst, w, h, max_stretch=0.12):
+def fit(src, need, dst, w, h, max_stretch=0.12, delogo=None):
     """Видео плана -> ровно need секунд, w×h, 24 к/с, без звука.
     Разница до ±12% — setpts, длиннее — обрезка, короче больше чем на 12% — ошибка."""
     have = duration(src)
@@ -67,6 +69,10 @@ def fit(src, need, dst, w, h, max_stretch=0.12):
         raise RuntimeError(f"{src}: видео {have:.2f} с, нужно {need:.2f} с (+{(f-1)*100:.0f}%) — перегенерировать длиннее")
     elif f < 1:
         note = f"обрезка {have:.2f}→{need:.2f} с"
+    if delogo:                          # метка генератора в кадре; координаты в сетке 720×1280
+        k = w / 720
+        x, y, dw, dh = (int(round(v * k)) for v in delogo)
+        vf.append(f"delogo=x={x}:y={y}:w={dw}:h={dh}")
     vf += [f"fps={FPS}", f"tpad=stop_mode=clone:stop_duration=1"]
     sh("ffmpeg", "-y", "-v", "error", "-i", src, "-vf", ",".join(vf), "-t", f"{need:.3f}", "-an",
        "-c:v", "libx264", "-preset", "medium", "-crf", "16", "-pix_fmt", "yuv420p", dst)
