@@ -7,3 +7,9 @@ fal-ai/nano-banana-pro:                            {unit: image,  price: 0.15}
 fal-ai/nano-banana-pro/edit:                       {unit: image,  price: 0.15}
 fal-ai/elevenlabs/tts/multilingual-v2:             {unit: 1k_chars, price: 0.10}
 fal-ai/elevenlabs/tts/eleven-v3:                   {unit: 1k_chars, price: 0.10}
+# видео сразу с голосом
+fal-ai/veo3.1/fast/image-to-video:                 {unit: second, price: 0.15}   # со звуком
+fal-ai/veo3.1/image-to-video:                      {unit: second, price: 0.40}   # со звуком
+xai/grok-imagine-video/image-to-video:             {unit: second, price: 0.05}
+openai/sora-2:                                     {unit: second, price: 0.10}   # прайс OpenAI, 720p; сверить по счёту
+openai/sora-2-pro:                                 {unit: second, price: 0.30}

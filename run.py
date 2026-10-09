@@ -18,6 +18,7 @@ from lekar import audio, estimate, video
 from lekar.core import DATA, Ledger, ROOT, duration, load_env
 
 STEPS = ["voice", "slice", "frames", "animate", "assemble", "compare", "report"]
+EXTRA = ["lineup"]
 
 
 class Run:
@@ -174,6 +175,15 @@ class Run:
         video.side_by_side(self.original, self.copy_path(), dst)
         print(f"  {dst}")
 
+    def lineup(self):
+        """Тест моделей с голосом: work/<образец>/talk/clips.json -> клипы подряд с подписями."""
+        from lekar import talk
+        d = self.base / "talk"
+        clips = json.loads((d / "clips.json").read_text())
+        dst = d / "lineup.mp4"
+        talk.lineup([(c["name"], d / c["file"]) for c in clips], dst)
+        print(f"  {dst}: {duration(dst):.1f} с")
+
     def report(self):
         sl = self.slices()
         fits = json.loads((self.out / "fit.json").read_text()) if (self.out / "fit.json").exists() else {}
@@ -220,7 +230,7 @@ class Run:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("step", choices=["estimate", "voices", "all"] + STEPS)
+    ap.add_argument("step", choices=["estimate", "voices", "all"] + STEPS + EXTRA)
     ap.add_argument("--sample", default="01")
     ap.add_argument("--mode", choices=["A", "B"], default="A")
     ap.add_argument("--yes", action="store_true", help="подтвердить расчёт и тратить деньги")
