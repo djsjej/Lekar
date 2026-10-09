@@ -45,6 +45,16 @@ def whisper(path):
     return d["text"], [dict(word=w["word"], start=round(w["start"], 3), end=round(w["end"], 3)) for w in d["words"]]
 
 
+def speech_onset(path, thr=0.06):
+    """Начало речи по громкости: whisper ставит первому слову после тишины время 0."""
+    import numpy as np
+    x = np.frombuffer(subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-vn", "-ac", "1", "-ar", "8000",
+                                      "-f", "s16le", "-"], capture_output=True).stdout, np.int16).astype(float)
+    r = np.array([np.sqrt((x[i:i + 160] ** 2).mean()) for i in range(0, len(x) - 160, 160)])
+    on = np.nonzero(r > thr * r.max())[0]
+    return round(on[0] * 0.02, 3) if len(on) else 0.0
+
+
 def norm(w):
     return re.sub(r"[^\w]", "", w.lower().replace("ё", "е")).replace("одну", "1")
 
@@ -110,6 +120,10 @@ def main():
     for s in part:
         clip = out / f"grok_{s['id']}.mp4"
         text, heard = whisper(clip)
+        if heard:                                   # первое слово — с реального начала речи
+            on = speech_onset(clip)
+            if on > heard[0]["start"] + 0.1 and on < heard[0]["end"]:
+                heard[0]["start"] = on
         words, issues = script_words(s, heard)
         speech_end = heard[-1]["end"] if heard else duration(clip)
         plan.append(dict(id=s["id"], file=clip.name, clip=round(duration(clip), 3), speech_end=speech_end,
