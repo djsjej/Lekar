@@ -98,37 +98,60 @@ def main():
     frames = ROOT / "work" / a.sample / "A"
     ledger = Ledger(out / "ledger.json")
 
-    todo = [s for s in part if not (out / f"grok_{s['id']}.mp4").exists() or s["id"] in a.redo]
-    rows = [(s["id"], math.ceil(s["orig_end"] - s["orig_start"])) for s in todo]
-    total = sum(cost_of(EP, sec) for _, sec in rows)
-    for i, sec in rows:
-        print(f"  план {i}: Grok {sec} с — {cost_of(EP, sec):.2f} $")
+    # единицы генерации: план целиком или его части (длинный план > 15 с — несколько клипов подряд,
+    # каждый следующий стартует с последнего кадра предыдущего, чтобы поза не прыгала на стыке)
+    units = []
+    for s in part:
+        if s.get("grok_parts"):
+            for k, t in enumerate(s["grok_parts"], 1):
+                units.append(dict(key=f"{s['id']}.{k}", shot=s, text=t, orig=None, chain=k > 1,
+                                  sec=min(15, math.ceil(len(re.findall(r"\w+", t)) / 2.4 + 0.3))))
+        else:
+            units.append(dict(key=str(s["id"]), shot=s, text=s["text"], orig=round(s["orig_end"] - s["orig_start"], 3),
+                              chain=False, sec=math.ceil(s["orig_end"] - s["orig_start"])))
+    redo = {str(x) for x in a.redo}
+    todo = [u for u in units if not (out / f"grok_{u['key']}.mp4").exists()
+            or u["key"] in redo or u["key"].split(".")[0] in redo]
+    total = sum(cost_of(EP, u["sec"]) for u in todo)
+    for u in todo:
+        print(f"  план {u['key']}: Grok {u['sec']} с — {cost_of(EP, u['sec']):.2f} $")
     print(f"  итого {total:.2f} $")
     if todo and not a.yes:
         sys.exit("платно: повторить с --yes")
 
-    for s in todo:
-        sec = math.ceil(s["orig_end"] - s["orig_start"])
-        frame = frames / f"frame_{s['id']}.png"
-        if not frame.exists():
-            remote("get", f"work/{a.sample}/A/frame_{s['id']}.png", str(frame))
-        r = fal_run(ledger, EP, dict(image_url=upload(frame), prompt=prompt(s, prompts["grok"][s["id"]]), duration=sec,
-                                     aspect_ratio="9:16", resolution="720p"), sec, f"G: план {s['id']} Grok {sec} с")
-        download(r["video"]["url"], out / f"grok_{s['id']}.mp4")
+    prev = None
+    for u in units:
+        clip = out / f"grok_{u['key']}.mp4"
+        if u in todo:
+            s = u["shot"]
+            if u["chain"] and prev is not None:
+                frame = out / f"start_{u['key']}.png"
+                subprocess.run(["ffmpeg", "-y", "-v", "error", "-sseof", "-0.08", "-i", str(prev), "-frames:v", "1",
+                                "-update", "1", str(frame)], check=True)
+            else:
+                frame = frames / f"frame_{s['id']}.png"
+                if not frame.exists():
+                    remote("get", f"work/{a.sample}/A/frame_{s['id']}.png", str(frame))
+            act = prompts["grok"][s["id"]] + (" He continues the same speech from the previous moment." if u["chain"] else "")
+            r = fal_run(ledger, EP, dict(image_url=upload(frame), prompt=prompt(dict(s, text=u["text"]), act),
+                                         duration=u["sec"], aspect_ratio="9:16", resolution="720p"),
+                        u["sec"], f"G: план {u['key']} Grok {u['sec']} с")
+            download(r["video"]["url"], clip)
+        prev = clip
 
     plan, report = [], []
-    for s in part:
-        clip = out / f"grok_{s['id']}.mp4"
+    for u in units:
+        clip = out / f"grok_{u['key']}.mp4"
         text, heard = whisper(clip)
         if heard:                                   # первое слово — с реального начала речи
             on = speech_onset(clip)
             if on > heard[0]["start"] + 0.1 and on < heard[0]["end"]:
                 heard[0]["start"] = on
-        words, issues = script_words(s, heard)
+        words, issues = script_words(dict(text=u["text"]), heard)
         speech_end = heard[-1]["end"] if heard else duration(clip)
-        plan.append(dict(id=s["id"], file=clip.name, clip=round(duration(clip), 3), speech_end=speech_end,
-                         orig=round(s["orig_end"] - s["orig_start"], 3), delogo=s.get("delogo"), words=words))
-        report.append(f"план {s['id']}: «{text}»" + ("".join(f"\n    ! {x}" for x in issues) if issues else "  — текст совпал"))
+        plan.append(dict(id=u["key"], shot=u["shot"]["id"], file=clip.name, clip=round(duration(clip), 3),
+                         speech_end=speech_end, orig=u["orig"], delogo=u["shot"].get("delogo"), words=words))
+        report.append(f"план {u['key']}: «{text}»" + ("".join(f"\n    ! {x}" for x in issues) if issues else "  — текст совпал"))
     (out / "plan.json").write_text(json.dumps(plan, ensure_ascii=False, indent=1))
     print("\n".join(report))
     for p in plan:

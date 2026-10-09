@@ -213,7 +213,10 @@ class Run:
         parts, auds, words, t, cuts = [], [], [], 0.0, []
         for p in plan:
             # склейка как в оригинале, если речь в неё влезает; иначе — сразу после речи
-            length = p["orig"] if p["speech_end"] + 0.25 <= p["orig"] else min(p["clip"], p["speech_end"] + 0.25)
+            if p.get("orig") and p["speech_end"] + 0.25 <= p["orig"]:
+                length = p["orig"]
+            else:                                   # часть длинного плана или речь не влезла — режем после речи
+                length = min(p["clip"], p["speech_end"] + 0.25)
             v = g / f"shot_{p['id']}.mp4"
             video.fit(g / p["file"], length, v, 1080, 1920, self.cfg["max_stretch"], p.get("delogo"))
             a = g / f"aud_{p['id']}.wav"
@@ -227,15 +230,17 @@ class Run:
         sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c:a", "pcm_s16le", voice)
         ass = video.make_ass(words, g / "subs.ass", self.cfg)
         (g / "words.json").write_text(json.dumps(words, ensure_ascii=False))
-        ids = f"_p{plan[0]['id']}-{plan[-1]['id']}"
+        first, last = plan[0].get("shot", plan[0]["id"]), plan[-1].get("shot", plan[-1]["id"])
+        ids = f"_p{first}-{last}"
         for w, h, name in ((720, 1280, f"replica_{self.a.sample}_grok{ids}.mp4"), (1080, 1920, f"replica_{self.a.sample}_grok{ids}_1080.mp4")):
             video.assemble(parts, voice, ass, g / name, w, h)
             print(f"  {g / name}: {duration(g / name):.2f} с, {video.measure_lufs(g / name):.1f} LUFS")
         shots = {s["id"]: s for s in self.shots}
-        print("  склейки:", ", ".join(f"{c:.2f} (ориг. {shots[p['id']]['orig_end']:.2f})" for c, p in zip(cuts, plan)))
+        print("  склейки:", ", ".join(f"{c:.2f}" + (f" (ориг. {shots[p['shot']]['orig_end']:.2f})" if p.get("orig") or p is plan[-1] else "")
+                                       for c, p in zip(cuts, plan)))
         if self.original.exists():
             orig = g / f"original{ids}.mp4"
-            sh("ffmpeg", "-y", "-v", "error", "-ss", str(shots[plan[0]["id"]]["orig_start"]), "-to", str(shots[plan[-1]["id"]]["orig_end"]),
+            sh("ffmpeg", "-y", "-v", "error", "-ss", str(shots[first]["orig_start"]), "-to", str(shots[last]["orig_end"]),
                "-i", self.original, "-c:v", "libx264", "-crf", "16", "-c:a", "aac", orig)
             video.side_by_side(orig, g / f"replica_{self.a.sample}_grok{ids}.mp4", g / f"side_by_side_grok{ids}.mp4")
             print(f"  {g / f'side_by_side_grok{ids}.mp4'}")
