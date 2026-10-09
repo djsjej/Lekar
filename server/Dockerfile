@@ -1,5 +1,5 @@
 # Lekar на Railway: ffmpeg + python + шрифт; образцы и результаты на диске /data.
-FROM python:3.11-slim
+FROM public.ecr.aws/docker/library/python:3.11-slim   # зеркало Docker Hub: сборщик Railway ловил ошибки на docker.io
 
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg curl \
     && rm -rf /var/lib/apt/lists/*
