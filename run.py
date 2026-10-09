@@ -224,6 +224,17 @@ class Run:
                 length = min(p["clip"], p["speech_end"] + 0.25)
             v = g / f"shot_{p['id']}.mp4"
             video.fit(g / p["file"], length, v, 1080, 1920, self.cfg["max_stretch"], p.get("delogo"), self.cfg.get("enhance"))
+            prev = plan[k - 1] if k else None
+            if prev is not None and prev.get("shot") == p.get("shot") and "." in str(p["id"]):
+                # Grok чуть перерисовывает стартовый кадр (цвет, масштаб): на стыке частей — растворение
+                # последнего кадра предыдущей части за 0,25 с поверх начала этой. Длина и звук те же.
+                last = g / f"last_{prev['id']}.png"
+                sh("ffmpeg", "-y", "-v", "error", "-sseof", "-0.05", "-i", parts[-1], "-frames:v", "1", "-update", "1", last)
+                tmp = v.with_name(v.stem + "_x.mp4")
+                sh("ffmpeg", "-y", "-v", "error", "-i", v, "-loop", "1", "-t", "0.5", "-i", last, "-filter_complex",
+                   "[1]format=yuva420p,fade=t=out:st=0:d=0.25:alpha=1[o];[0][o]overlay=eof_action=pass,format=yuv420p",
+                   "-c:v", "libx264", "-preset", "fast", "-crf", "8", "-an", tmp)
+                tmp.replace(v)
             a = g / f"aud_{p['id']}.wav"
             sh("ffmpeg", "-y", "-v", "error", "-i", g / p["file"], "-vn", "-t", f"{length:.3f}", "-af", "apad",
                "-t", f"{length:.3f}", "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le", a)
