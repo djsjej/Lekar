@@ -172,7 +172,7 @@ class Run:
         fits, parts = {}, []
         for s in self.part:
             p = self.out / f"shot_{s['id']}.mp4"
-            fits[s["id"]] = video.fit(self.out / f"raw_{s['id']}.mp4", sl[s["id"]]["dur"], p, 1080, 1920, self.cfg["max_stretch"], s.get("delogo"))
+            fits[s["id"]] = video.fit(self.out / f"raw_{s['id']}.mp4", sl[s["id"]]["dur"], p, 1080, 1920, self.cfg["max_stretch"], s.get("delogo"), self.cfg.get("enhance"))
             parts.append(p)
         (self.out / "fit.json").write_text(json.dumps(fits, ensure_ascii=False, indent=1))
         tag = self.copy_path().stem
@@ -218,7 +218,7 @@ class Run:
             else:                                   # часть длинного плана или речь не влезла — режем после речи
                 length = min(p["clip"], p["speech_end"] + 0.25)
             v = g / f"shot_{p['id']}.mp4"
-            video.fit(g / p["file"], length, v, 1080, 1920, self.cfg["max_stretch"], p.get("delogo"))
+            video.fit(g / p["file"], length, v, 1080, 1920, self.cfg["max_stretch"], p.get("delogo"), self.cfg.get("enhance"))
             a = g / f"aud_{p['id']}.wav"
             sh("ffmpeg", "-y", "-v", "error", "-i", g / p["file"], "-vn", "-t", f"{length:.3f}", "-af", "apad",
                "-t", f"{length:.3f}", "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le", a)

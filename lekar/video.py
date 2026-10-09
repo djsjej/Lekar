@@ -71,12 +71,19 @@ def animate_action(ledger, endpoint, frame, prompt, seconds, dst, tag):
     return download(r["video"]["url"], dst)
 
 
-def fit(src, need, dst, w, h, max_stretch=0.12, delogo=None):
+ENHANCE = dict(denoise="hqdn3d=1.2:1.2:4:4", sharpen="cas=0.45")   # переопределяется в config.yaml → enhance
+
+
+def fit(src, need, dst, w, h, max_stretch=0.12, delogo=None, enhance=None):
     """Видео плана -> ровно need секунд, w×h, 24 к/с, без звука.
     Разница до ±12% — setpts, длиннее — обрезка, короче больше чем на 12% — ошибка."""
     have = duration(src)
     f = need / have
-    vf = [f"scale={w}:{h}:force_original_aspect_ratio=increase", f"crop={w}:{h}", "setsar=1"]
+    en = ENHANCE if enhance is None else enhance
+    # чистим артефакты сжатия генератора до увеличения, масштаб lanczos, резкость — уже в итоговом размере
+    vf = ([en["denoise"]] if en.get("denoise") else []) + [
+        f"scale={w}:{h}:force_original_aspect_ratio=increase:flags=lanczos+accurate_rnd+full_chroma_int",
+        f"crop={w}:{h}", "setsar=1"] + ([en["sharpen"]] if en.get("sharpen") else [])
     note = "как есть"
     if abs(f - 1) > 0.005 and abs(f - 1) <= max_stretch:
         vf.insert(0, f"setpts={f:.5f}*PTS"); note = f"setpts ×{f:.3f}"
@@ -90,7 +97,7 @@ def fit(src, need, dst, w, h, max_stretch=0.12, delogo=None):
         vf.append(f"delogo=x={x}:y={y}:w={dw}:h={dh}")
     vf += [f"fps={FPS}", f"tpad=stop_mode=clone:stop_duration=1"]
     sh("ffmpeg", "-y", "-v", "error", "-i", src, "-vf", ",".join(vf), "-t", f"{need:.3f}", "-an",
-       "-c:v", "libx264", "-preset", "medium", "-crf", "16", "-pix_fmt", "yuv420p", dst)
+       "-c:v", "libx264", "-preset", "fast", "-crf", "8", "-pix_fmt", "yuv420p", dst)   # промежуточный, почти без потерь
     return dict(have=round(have, 3), need=round(need, 3), factor=round(f, 4), note=note)
 
 
@@ -157,7 +164,8 @@ def assemble(shot_videos, voice, ass, dst, w, h):
     vf = f"scale={w}:{h}:flags=lanczos,ass={ass}:fontsdir={FONTS}"
     sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", lst, "-i", voice,
        "-map", "0:v", "-map", "1:a", "-vf", vf, "-af", af, "-r", str(FPS),
-       "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p", "-profile:v", "high",
+       "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-tune", "film", "-x264-params", "aq-mode=3",
+       "-pix_fmt", "yuv420p", "-profile:v", "high",
        "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-ac", "2", "-movflags", "+faststart", "-shortest", dst)
     return dst
 
