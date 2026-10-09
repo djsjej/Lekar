@@ -18,7 +18,7 @@ from lekar import audio, estimate, video
 from lekar.core import DATA, Ledger, ROOT, duration, load_env
 
 STEPS = ["voice", "slice", "frames", "animate", "assemble", "compare", "report"]
-EXTRA = ["lineup", "assemble_g"]
+EXTRA = ["lineup", "assemble_g", "share"]
 
 
 class Run:
@@ -260,6 +260,20 @@ class Run:
                "-i", self.original, "-c:v", "libx264", "-crf", "16", "-c:a", "aac", orig)
             video.side_by_side(orig, g / f"replica_{self.a.sample}_grok{ids}.mp4", g / f"side_by_side_grok{ids}.mp4")
             print(f"  {g / f'side_by_side_grok{ids}.mp4'}")
+
+    def share(self):
+        """Копия 1080×1920 для чата: не больше 29 МБ (лимит 30 МБ), двухпроходное сжатие под размер."""
+        from lekar.core import sh
+        g = self.base / "G"
+        for src in sorted(g.glob("replica_*_1080.mp4")):
+            dst = src.with_name(src.stem.replace("_1080", "_1080_chat") + ".mp4")
+            dur = duration(src)
+            kbps = int((29 * 8 * 1024 * 0.97) / dur - 160)          # видео; 160 кбит/с — звук
+            log = g / "x264pass"
+            for pas, out, extra in ((1, "/dev/null", ["-an", "-f", "mp4"]), (2, dst, ["-c:a", "aac", "-b:a", "160k"])):
+                sh("ffmpeg", "-y", "-v", "error", "-i", src, "-c:v", "libx264", "-preset", "slow", "-b:v", f"{kbps}k",
+                   "-pass", str(pas), "-passlogfile", log, "-pix_fmt", "yuv420p", *extra, "-movflags", "+faststart", out)
+            print(f"  {dst}: {dst.stat().st_size / 2**20:.1f} МБ, {kbps} кбит/с")
 
     def report(self):
         sl = self.slices()
