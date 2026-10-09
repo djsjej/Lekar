@@ -32,3 +32,23 @@ animate:
   2: The man pours a small amount of apple cider vinegar from the glass bottle into the wooden spoon until the spoon is full, then stops pouring and sets the bottle upright on the table; then he slowly tips the full spoon over the empty glass. The liquid stays in the spoon, nothing spills or overflows, no continuous stream into the glass, the glass stays almost empty until the spoon is tipped. Static camera, natural hand motion.
   3: The man squeezes the lemon into the glass, then adds a spoon of honey and pours warm water from the clay jug. Static camera, natural hand motion.
   4: The man speaks calmly to the camera holding the glass with both hands, small natural head movements, light steam rises from the drink. Camera static.
+# Действия для Grok (речь дописывает tools/grok_build.py). Только предметы, которые уже есть в кадре.
+grok:
+  1: >-
+    Low camera on the wooden floor. The man sits cross-legged behind the woman's bare legs. For the first half he points
+    with his index finger at the swollen left ankle with the red sock mark and keeps pointing at it, then gestures with an
+    open palm. The woman's legs stay still. No new objects appear.
+  2: >-
+    The man pours a small amount of apple cider vinegar from the glass bottle into the wooden spoon until the spoon is full,
+    stops pouring and sets the bottle upright on the table, then slowly tips the full spoon over the empty glass. The liquid
+    stays in the spoon, nothing spills, no continuous stream into the glass. Only the objects already on the table:
+    one glass, one bottle, one wooden spoon, one clay bowl of honey, half a lemon. No new objects appear.
+  3: >-
+    The man squeezes the half lemon in his hand over the glass, puts it down, takes the single wooden spoon from the table,
+    adds a little honey from the clay bowl to the glass, puts the spoon down, then pours warm water from the clay jug into
+    the glass. Only these objects exist in the scene: one glass, the one half lemon he holds, one wooden spoon, one clay bowl
+    of honey, one clay jug. There is only one spoon and one lemon half; no second spoon, no second lemon, no lamp or other
+    new objects appear. The bowl stays on the table.
+  4: >-
+    The man stands behind the wooden table holding the glass of warm amber drink with both hands at chest level; light steam
+    rises from the glass; small natural head movements, hands almost still. No new objects appear.

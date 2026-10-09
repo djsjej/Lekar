@@ -22,7 +22,7 @@ from urllib.parse import parse_qs, unquote, urlsplit
 APP = Path(__file__).resolve().parent.parent
 DATA = Path(os.environ.get("LEKAR_DATA", "/data")).resolve()
 TOKEN = os.environ.get("LEKAR_SERVER_TOKEN", "")
-STEPS = {"estimate", "voices", "all", "voice", "slice", "frames", "animate", "assemble", "compare", "report", "lineup"}
+STEPS = {"estimate", "voices", "all", "voice", "slice", "frames", "animate", "assemble", "compare", "report", "lineup", "assemble_g"}
 NAME = re.compile(r"^[A-Za-z0-9_-]{1,40}$")
 RUNS, LOCK = {}, threading.Lock()
 
