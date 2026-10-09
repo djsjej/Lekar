@@ -52,6 +52,7 @@ def main():
     ap.add_argument("--mode"); ap.add_argument("--yes", action="store_true")
     ap.add_argument("--pro", type=int); ap.add_argument("--redo", type=int, nargs="*")
     ap.add_argument("--voice"); ap.add_argument("--seed", type=int)
+    ap.add_argument("--shots", type=int, nargs="*"); ap.add_argument("--avatar"); ap.add_argument("--i2v")
     ap.add_argument("-n", type=int, default=6000)
     a = ap.parse_args()
     f = lambda path="": f"{url}/f/{tok}/{quote(path)}"
@@ -88,7 +89,8 @@ def main():
         print(js(curl("-X", "DELETE", f(r[0]))))
     elif c == "run":
         sample, step = r
-        body = {k: v for k, v in dict(mode=a.mode, yes=a.yes, pro=a.pro, redo=a.redo, voice=a.voice, seed=a.seed).items() if v}
+        body = {k: v for k, v in dict(mode=a.mode, yes=a.yes, pro=a.pro, redo=a.redo, voice=a.voice, seed=a.seed,
+                                                     shots=a.shots, avatar=a.avatar, i2v=a.i2v).items() if v}
         print(js(curl("-X", "POST", "-H", "Content-Type: application/json", "--data-binary", json.dumps(body),
                       f"{url}/run/{tok}/{sample}/{step}")))
     elif c == "log":

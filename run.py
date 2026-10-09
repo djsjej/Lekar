@@ -28,8 +28,15 @@ class Run:
         self.cfg = yaml.safe_load((ROOT / "lekar/config.yaml").read_text())
         if a.voice:
             self.cfg["voice"] = a.voice
+        if a.avatar:
+            self.cfg["avatar"] = a.avatar
+        if a.i2v:
+            self.cfg["i2v"] = a.i2v
         self.sdir = DATA / "samples" / a.sample
         self.shots = json.loads((self.sdir / "shots.json").read_text())
+        # часть ролика: озвучка и нарезка — по всему тексту, генерация и сборка — только по этим планам
+        self.part = [s for s in self.shots if not a.shots or s["id"] in a.shots]
+        self.suffix = f"_p{self.part[0]['id']}-{self.part[-1]['id']}" if a.shots else ""
         self.text = (self.sdir / "text.txt").read_text().strip()
         self.prompts = yaml.safe_load((self.sdir / "prompts.yaml").read_text())
         self.original = self.sdir / "original.mp4"
@@ -48,7 +55,7 @@ class Run:
     def estimate(self, show=True):
         sl = self.slices()
         durs = {s["id"]: s["dur"] for s in sl} if sl else None
-        rows = estimate.plan(self.shots, self.text, self.a.mode, self.cfg, durs)
+        rows = estimate.plan(self.part, self.text, self.a.mode, self.cfg, durs)
         if (self.adir / "voice.wav").exists() or (self.adir / "voice_raw.wav").exists():
             rows = [r for r in rows if r["step"] != "озвучка"]
         if self.a.mode == "B" and (self.out / "frame_4.png").exists():
@@ -135,7 +142,7 @@ class Run:
 
     def animate(self):
         sl = {s["id"]: s for s in self.slices()}
-        todo = [s for s in self.shots if not (self.out / f"raw_{s['id']}.mp4").exists() or s["id"] in self.a.redo]
+        todo = [s for s in self.part if not (self.out / f"raw_{s['id']}.mp4").exists() or s["id"] in self.a.redo]
         if not todo:
             return
         self.estimate(); self.gate("оживление")
@@ -146,33 +153,47 @@ class Run:
                 video.animate_talking(self.ledger, ep, frame, sl[i]["path"], self.prompts["animate"][i], dst,
                                       f"{self.a.mode}: план {i} аватар {ep.rsplit('/', 1)[-1]}")
             else:
-                d = estimate.i2v_duration(sl[i]["dur"], self.cfg["max_stretch"])
+                d = video.i2v_seconds(self.cfg["i2v"], sl[i]["dur"], self.cfg["max_stretch"])
                 video.animate_action(self.ledger, self.cfg["i2v"], frame, self.prompts["animate"][i], d, dst,
                                      f"{self.a.mode}: план {i} i2v {d} с")
 
     def assemble(self):
         sl = {s["id"]: s for s in self.slices()}
         words = json.loads((self.adir / "words.json").read_text())
-        ass = video.make_ass(words, self.out / "subs.ass", self.cfg)
+        voice = self.adir / "voice.wav"
+        if self.suffix:                                   # часть ролика: свой кусок голоса и слов
+            t0, t1 = sl[self.part[0]["id"]]["start"], sl[self.part[-1]["id"]]["end"]
+            ids = {s["id"] for s in self.part}
+            words = [dict(w, start=round(w["start"] - t0, 3), end=round(w["end"] - t0, 3)) for w in words if w["shot"] in ids]
+            voice = self.out / f"voice{self.suffix}.wav"
+            from lekar.core import sh
+            sh("ffmpeg", "-y", "-v", "error", "-i", self.adir / "voice.wav", "-ss", f"{t0:.3f}", "-to", f"{t1:.3f}", voice)
+        ass = video.make_ass(words, self.out / f"subs{self.suffix}.ass", self.cfg)
         fits, parts = {}, []
-        for s in self.shots:
+        for s in self.part:
             p = self.out / f"shot_{s['id']}.mp4"
             fits[s["id"]] = video.fit(self.out / f"raw_{s['id']}.mp4", sl[s["id"]]["dur"], p, 1080, 1920, self.cfg["max_stretch"], s.get("delogo"))
             parts.append(p)
         (self.out / "fit.json").write_text(json.dumps(fits, ensure_ascii=False, indent=1))
-        tag = f"replica_{self.a.sample}" + ("" if self.a.mode == "A" else "_B")
+        tag = self.copy_path().stem
         for w, h, name in ((720, 1280, f"{tag}.mp4"), (1080, 1920, f"{tag}_1080.mp4")):
-            video.assemble(parts, self.adir / "voice.wav", ass, self.out / name, w, h)
+            video.assemble(parts, voice, ass, self.out / name, w, h)
             print(f"  {self.out / name}: {duration(self.out / name):.2f} с, {video.measure_lufs(self.out / name):.1f} LUFS")
 
     def copy_path(self):
-        return self.out / (f"replica_{self.a.sample}" + ("" if self.a.mode == "A" else "_B") + ".mp4")
+        return self.out / (f"replica_{self.a.sample}" + ("" if self.a.mode == "A" else "_B") + self.suffix + ".mp4")
 
     def compare(self):
         if not self.original.exists():
             print("  нет оригинала — сравнение пропущено"); return
-        dst = self.out / "side_by_side.mp4"
-        video.side_by_side(self.original, self.copy_path(), dst)
+        dst = self.out / f"side_by_side{self.suffix}.mp4"
+        orig = self.original
+        if self.suffix:
+            orig = self.out / f"original{self.suffix}.mp4"
+            from lekar.core import sh
+            sh("ffmpeg", "-y", "-v", "error", "-ss", str(self.part[0]["orig_start"]), "-to", str(self.part[-1]["orig_end"]),
+               "-i", self.original, "-c:v", "libx264", "-crf", "16", "-c:a", "aac", orig)
+        video.side_by_side(orig, self.copy_path(), dst)
         print(f"  {dst}")
 
     def lineup(self):
@@ -190,8 +211,10 @@ class Run:
         meta = json.loads((self.adir / "meta.json").read_text())
         calls = self.ledger.data["calls"]
         mine = [c for c in calls if c["tag"].startswith(f"{self.a.mode}:") or c["tag"].startswith("озвучка")]
-        est = estimate.plan(self.shots, self.text, self.a.mode, self.cfg)
-        L = [f"# Отчёт: копия образца {self.a.sample}, режим {self.a.mode}", "",
+        est = estimate.plan(self.part, self.text, self.a.mode, self.cfg)
+        L = [f"# Отчёт: копия образца {self.a.sample}, режим {self.a.mode}"
+             + (f", планы {self.part[0]['id']}–{self.part[-1]['id']}" if self.suffix else ""), "",
+             f"Модели: говорящие планы `{self.cfg['avatar']}`, действия `{self.cfg['i2v']}`.", "",
              f"Голос: {meta['voice']} ({self.cfg['tts']}), тайминги слов: {meta['timings']}.", "",
              "## Деньги", "", "Расчёт до генерации (по длинам планов оригинала):", "", estimate.table(est), "",
              "Факт:", "", "| Вызов | Модель | Объём | Сумма | Время |", "|---|---|---|---|---|"]
@@ -209,14 +232,15 @@ class Run:
         L += ["", "## Склейки", "", "| Граница | Оригинал | Копия | Отклонение |", "|---|---|---|---|"]
         bad = []
         for s, cut in zip(self.shots, sl):
-            if s is self.shots[-1]:
+            if s is self.part[-1]:
                 break
             d = cut["end"] - s["orig_end"]
             L.append(f"| {s['id']}→{s['id'] + 1} | {s['orig_end']:.2f} | {cut['end']:.2f} | {d:+.2f} с {'✅' if abs(d) <= 0.3 else '❌'} |")
             if abs(d) > 0.3:
                 bad.append(f"склейка {s['id']}→{s['id'] + 1} уехала на {d:+.2f} с — темп голоса другой")
-        total = sl[-1]["end"]
-        L += [f"| конец | {self.shots[-1]['orig_end']:.2f} | {total:.2f} | {total - self.shots[-1]['orig_end']:+.2f} с |", ""]
+        last = self.part[-1]
+        total = next(c["end"] for c in sl if c["id"] == last["id"])
+        L += [f"| конец | {last['orig_end']:.2f} | {total:.2f} | {total - last['orig_end']:+.2f} с |", ""]
         L += ["## Подгонка планов", "", "| План | Было | Нужно | Что сделано |", "|---|---|---|---|"]
         for k, f in fits.items():
             L.append(f"| {k} | {f['have']:.2f} с | {f['need']:.2f} с | {f['note']} |")
@@ -224,8 +248,8 @@ class Run:
         if cp.exists():
             L += ["", f"Громкость копии: {video.measure_lufs(cp):.1f} LUFS (цель −14, оригинал −14,5)."]
         L += ["", "## Что не совпало", ""] + [f"- {b}" for b in bad] + ["- (дописать по просмотру side_by_side.mp4: губы планов 1 и 4, руки планов 2–3, субтитры)", ""]
-        (self.out / "report.md").write_text("\n".join(L))
-        print(f"  {self.out / 'report.md'}")
+        (self.out / f"report{self.suffix}.md").write_text("\n".join(L))
+        print(f"  {self.out / f'report{self.suffix}.md'}")
 
 
 def main():
@@ -238,6 +262,9 @@ def main():
     ap.add_argument("--pro", type=int, help="план, который оживить в Kling Avatar Pro")
     ap.add_argument("--redo", type=int, nargs="*", default=[], help="планы, которые перегенерировать")
     ap.add_argument("--seed", type=int, default=55)
+    ap.add_argument("--shots", type=int, nargs="*", help="только эти планы (например 1 2 3 — первые 20 с)")
+    ap.add_argument("--avatar", help="модель говорящих планов, например veed/fabric-1.0")
+    ap.add_argument("--i2v", help="модель планов с действием, например xai/grok-imagine-video/image-to-video")
     a = ap.parse_args()
     r = Run(a)
     if a.step == "estimate":

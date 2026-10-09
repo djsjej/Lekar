@@ -74,6 +74,11 @@ def launch(sample, step, body):
         args += ["--redo"] + [str(int(x)) for x in body["redo"]]
     if body.get("voice") and NAME.match(str(body["voice"])):
         args += ["--voice", body["voice"]]
+    if body.get("shots"):
+        args += ["--shots"] + [str(int(x)) for x in body["shots"]]
+    for k in ("avatar", "i2v"):
+        if body.get(k) and re.match(r"^[a-z0-9][a-z0-9./_-]{2,80}$", str(body[k])):
+            args += [f"--{k}", body[k]]
     if isinstance(body.get("seed"), int):
         args += ["--seed", str(body["seed"])]
     log_dir = DATA / "work" / sample; log_dir.mkdir(parents=True, exist_ok=True)

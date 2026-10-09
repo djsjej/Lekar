@@ -34,7 +34,8 @@ def plan(shots, text, mode, cfg, durations=None):
             rows.append(dict(step=f"план {s['id']}", endpoint=cfg["avatar"], units=round(sec, 1),
                              what=f"аватар, {sec:.1f} с аудио"))
         else:
-            d = i2v_duration(sec)
+            from .video import i2v_seconds
+            d = i2v_seconds(cfg["i2v"], sec)
             rows.append(dict(step=f"план {s['id']}", endpoint=cfg["i2v"], units=d,
                              what=f"картинка→видео {d} с под {sec:.1f} с аудио"))
     for r in rows:

@@ -43,16 +43,31 @@ def frames_generated(ledger, prompts, shots, out_dir, seed=None):
 
 # ---------- оживление ----------
 
+def i2v_seconds(endpoint, need, stretch=0.12):
+    """Длина заказа «картинка→видео»: Kling — 5 или 10 с, Grok — целые секунды (лишнее срежется)."""
+    import math
+    if endpoint.startswith("xai/grok"):
+        return max(3, math.ceil(need))
+    return 5 if need <= 5 * (1 + stretch) else 10
+
+
 def animate_talking(ledger, endpoint, frame, slice_wav, prompt, dst, tag):
     sec = duration(slice_wav)
-    r = fal_run(ledger, endpoint, dict(image_url=upload(frame), audio_url=upload(slice_wav), prompt=prompt),
-                round(sec, 2), tag)
+    args = dict(image_url=upload(frame), audio_url=upload(slice_wav))
+    if endpoint.startswith("veed/fabric"):
+        args["resolution"] = "480p"           # 0,08 $/с; 720p — 0,15 $/с
+    else:
+        args["prompt"] = prompt
+    r = fal_run(ledger, endpoint, args, round(sec, 2), tag)
     return download(r["video"]["url"], dst)
 
 
 def animate_action(ledger, endpoint, frame, prompt, seconds, dst, tag):
-    r = fal_run(ledger, endpoint, dict(image_url=upload(frame), prompt=prompt, duration=str(seconds)),
-                seconds, tag)
+    args = dict(image_url=upload(frame), prompt=prompt, duration=str(seconds))
+    if endpoint.startswith("xai/grok"):        # звук Grok не берём: на сборке ляжет наша озвучка
+        args = dict(image_url=upload(frame), duration=seconds, aspect_ratio="9:16", resolution="720p",
+                    prompt=prompt + " He does not speak, mouth closed or relaxed. No dialogue, no music.")
+    r = fal_run(ledger, endpoint, args, seconds, tag)
     return download(r["video"]["url"], dst)
 
 
