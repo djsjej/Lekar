@@ -1,0 +1,25 @@
+# Образец 04 «Отвар из сельдерея и петрушки» — дубликат ролика из папки «лекарь» с нашим героем.
+# Утверждения смягчены до честных (docs/PROCESS.md): без ложных медицинских обещаний.
+grok:
+  1: >-
+    The man pours yellow liquid from the glass jug into the funnel of the glass anatomical kidney model on the
+    table; the liquid flows through the glass tubes. Only objects and people already in the frame; no new objects
+    appear.
+  2: >-
+    Close-up: the man stands next to the glass kidney model, holding the jug, and talks to the camera seriously.
+    Only objects and people already in the frame; no new objects appear.
+  3: >-
+    The man holds the bowl of chopped celery, then tips it into the saucepan of boiling water on the table,
+    talking to the camera. Only objects and people already in the frame; no new objects appear.
+  4: >-
+    The man drops the sprigs of fresh parsley into the saucepan. Only objects and people already in the frame; no
+    new objects appear.
+  5: >-
+    The man squeezes the half lemon over the saucepan. Only objects and people already in the frame; no new
+    objects appear.
+  6: >-
+    The man adds the whole cloves from the spoon into the saucepan. Only objects and people already in the frame;
+    no new objects appear.
+  7: >-
+    The man stands holding a glass mug of warm golden herbal decoction at chest level, gestures with the free
+    hand, talks to the camera. Only objects and people already in the frame; no new objects appear.

@@ -1,0 +1,25 @@
+# Образец 03 «Гранат, корица и лайм» — дубликат ролика из папки «лекарь» с нашим героем.
+# Утверждения смягчены до честных (docs/PROCESS.md): без ложных медицинских обещаний.
+grok:
+  1: >-
+    Close-up: the man holds a handful of pomegranate seeds in his open palm close to the camera and squeezes a
+    lime wedge above them; juice drips onto the seeds; then he looks into the camera. Only objects and people
+    already in the frame; no new objects appear.
+  2: >-
+    The man holds the pomegranate seeds in his palm close to the camera and talks to the camera with a knowing
+    look. Only objects and people already in the frame; no new objects appear.
+  3: >-
+    The man stands behind the wooden counter and pours the pomegranate seeds from his hands into the empty glass
+    blender jar. Only objects and people already in the frame; no new objects appear.
+  4: >-
+    The man adds a teaspoon of ground cinnamon into the blender jar with the seeds. Only objects and people
+    already in the frame; no new objects appear.
+  5: >-
+    The man squeezes the half lime over the blender jar. Only objects and people already in the frame; no new
+    objects appear.
+  6: >-
+    The man pours the glass of clean water into the blender jar. Only objects and people already in the frame; no
+    new objects appear.
+  7: >-
+    The man stands behind the counter holding a tall glass of red pomegranate drink at chest level, gestures with
+    the free hand, talks to the camera. Only objects and people already in the frame; no new objects appear.
