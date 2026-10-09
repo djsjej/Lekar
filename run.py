@@ -15,7 +15,7 @@ from pathlib import Path
 import yaml
 
 from lekar import audio, estimate, video
-from lekar.core import Ledger, ROOT, duration, load_env
+from lekar.core import DATA, Ledger, ROOT, duration, load_env
 
 STEPS = ["voice", "slice", "frames", "animate", "assemble", "compare", "report"]
 
@@ -27,12 +27,12 @@ class Run:
         self.cfg = yaml.safe_load((ROOT / "lekar/config.yaml").read_text())
         if a.voice:
             self.cfg["voice"] = a.voice
-        self.sdir = ROOT / "samples" / a.sample
+        self.sdir = DATA / "samples" / a.sample
         self.shots = json.loads((self.sdir / "shots.json").read_text())
         self.text = (self.sdir / "text.txt").read_text().strip()
         self.prompts = yaml.safe_load((self.sdir / "prompts.yaml").read_text())
         self.original = self.sdir / "original.mp4"
-        self.base = ROOT / "work" / a.sample
+        self.base = DATA / "work" / a.sample
         self.adir = self.base / "audio"
         self.out = self.base / a.mode
         for d in (self.adir, self.out):

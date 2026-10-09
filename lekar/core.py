@@ -6,6 +6,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "fonts"
+# на сервере образцы и результаты живут на диске Railway (/data), локально — рядом с кодом
+DATA = Path(os.environ.get("LEKAR_DATA", ROOT))
 PRICES = yaml.safe_load((Path(__file__).parent / "prices.yaml").read_text())
 
 

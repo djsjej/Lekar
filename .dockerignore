@@ -1,0 +1,5 @@
+.git
+work
+.env
+__pycache__
+samples/*/original.mp4
