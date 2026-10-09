@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 from lekar.core import Ledger, cost_of, download, fal_run, upload  # noqa: E402
 
 EP = "fal-ai/nano-banana-pro/edit"
-SHEET = ROOT / "work/01/hero/character_sheet_v2.png"
+SHEET = ROOT / "assets/hero/character_sheet_v2.png"
 PROMPT = ("Recreate the first image as a clean photo: same scene, same camera angle and framing, same pose and hand position, "
           "same objects and any other people exactly as they are, same light. Replace only the main man: he becomes the man from "
           "the second image (keep that face exactly) and instead of his shirt he wears the olive-green T-shirt with the white "
