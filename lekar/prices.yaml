@@ -1,0 +1,9 @@
+# Цены fal, USD. Проверено через api.fal.ai/v1/models/pricing 2026-10-09.
+fal-ai/kling-video/ai-avatar/v2/standard:          {unit: second, price: 0.0562}
+fal-ai/kling-video/ai-avatar/v2/pro:               {unit: second, price: 0.115}
+fal-ai/kling-video/v2.5-turbo/pro/image-to-video:  {unit: second, price: 0.07}
+fal-ai/kling-video/v2.1/standard/image-to-video:   {unit: second, price: 0.056}
+fal-ai/nano-banana-pro:                            {unit: image,  price: 0.15}
+fal-ai/nano-banana-pro/edit:                       {unit: image,  price: 0.15}
+fal-ai/elevenlabs/tts/multilingual-v2:             {unit: 1k_chars, price: 0.10}
+fal-ai/elevenlabs/tts/eleven-v3:                   {unit: 1k_chars, price: 0.10}

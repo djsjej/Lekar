@@ -1,0 +1,18 @@
+# Настройки прогона по умолчанию. Переопределяются флагами run.py.
+tts: fal-ai/elevenlabs/tts/multilingual-v2
+voice: George                 # тёплый, с хрипотцой; кандидаты для проб — voices ниже
+voices: [George, Bill, Brian, Daniel]
+voice_settings: {stability: 0.55, similarity_boost: 0.75, style: 0.15, speed: 0.95}
+avatar: fal-ai/kling-video/ai-avatar/v2/standard
+avatar_pro: fal-ai/kling-video/ai-avatar/v2/pro
+i2v: fal-ai/kling-video/v2.5-turbo/pro/image-to-video
+max_stretch: 0.12
+match_cuts: true            # подогнать паузы и темп под склейки оригинала (±0,3 с)
+subs:
+  font: Montserrat SemiBold
+  size: 50                    # px при ширине 720
+  center_y: 1005              # центр строки, из 1280
+  shadow_offset: 2
+  shadow_blur: 4
+  shadow_alpha: "60"          # hex, 00 — непрозрачная
+  bridge_gap: 0.15            # паузы короче — слово держится до следующего

@@ -1,0 +1,6 @@
+.env
+work/
+fonts/*.ttf
+samples/*/original.mp4
+__pycache__/
+*.pyc

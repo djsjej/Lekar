@@ -1,0 +1,34 @@
+# Промпты режима B и оживления — из задания sample-01-replica.md
+character_sheet: >-
+  Character sheet of the same man on a neutral light background: front view, three-quarter view,
+  profile, half-body. Russian man about 55 years old, short neat grey hair, short full grey beard,
+  kind calm face, light wrinkles, dark navy linen shirt with sleeves rolled to the elbows, beige
+  linen trousers. Photorealistic, natural soft daylight, smartphone photo look.
+frames:
+  1: >-
+    Vertical 9:16 photo from a very low camera on a wooden floor inside a rustic Russian log cabin
+    with bundles of dried herbs hanging from the ceiling beams. In the foreground, a woman's bare legs
+    from the knees down, standing: the left leg visibly swollen at the ankle with a red mark from a
+    sock band, the right leg slim and normal. Between and behind her legs, the man from the reference
+    sits cross-legged on the floor, pointing with his index finger at the swollen ankle and looking
+    into the camera with a concerned, friendly expression. Warm daylight from a window,
+    photorealistic, smartphone photo.
+  2: >-
+    Vertical 9:16 medium shot in the same log cabin kitchen. The man from the reference stands behind
+    a rough wooden table, pouring apple cider vinegar from a glass bottle into a wooden spoon held over
+    an empty clear drinking glass. On the table: a brown clay bowl of honey and half a lemon. Window on
+    the left, clay pots on shelves, dried herbs hanging. Warm daylight, photorealistic.
+  3: >-
+    Vertical 9:16 medium close shot at the same wooden table. The man from the reference squeezes half
+    a lemon over the glass, which already contains a little amber liquid. A wooden spoon with honey and
+    a clay jug stand on the table next to the glass. Same cabin, same light, photorealistic.
+  4: >-
+    Vertical 9:16 medium shot, the man from the reference stands behind the wooden table, waist up,
+    holding a clear glass of warm amber drink with light steam in both hands at chest level, looking
+    into the camera, calm friendly expression, mouth slightly open as if speaking. Same log cabin,
+    window on the left, dried herbs, warm daylight, photorealistic.
+animate:
+  1: The man talks to the camera with natural expressive facial movements, points at the swollen ankle, then gestures with an open palm. Camera static.
+  2: The man slowly pours apple cider vinegar from the bottle into the wooden spoon over the glass, glances at the camera while speaking. Static camera, natural motion.
+  3: The man squeezes the lemon into the glass, then adds a spoon of honey and pours warm water from the clay jug. Static camera, natural hand motion.
+  4: The man speaks calmly to the camera holding the glass with both hands, small natural head movements, light steam rises from the drink. Camera static.
