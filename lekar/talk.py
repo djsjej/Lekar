@@ -60,16 +60,16 @@ def sora(ledger, frame, text, dst, seconds=8, model="sora-2", tag="sora"):
     return Path(dst)
 
 
-def lineup(clips, dst, h=1280):
-    """Клипы рядом, у каждого подпись сверху и свой звук по очереди: сначала все кадры рядом молча
-    не годятся для оценки голоса, поэтому склеиваем последовательно: клип1 | клип2 | ..., каждый со своим звуком."""
+def lineup(clips, dst):
+    """Клипы подряд, каждый со своим звуком и подписью сверху — чтобы сравнивать и картинку, и голос.
+    Все приводятся к 720×1280, 24 к/с, 44,1 кГц: иначе склейка без перекодирования ломается."""
     parts = []
     for name, path in clips:
         p = Path(dst).with_name(f"_lu_{len(parts)}.mp4")
         label = name.replace(":", r"\:")
         sh("ffmpeg", "-y", "-v", "error", "-i", path, "-vf",
-           f"scale=-2:{h},setsar=1,fps=24,drawtext=text='{label}':fontcolor=white:fontsize=44:box=1:boxcolor=black@0.6:boxborderw=12:x=(w-tw)/2:y=40",
-           "-af", "aresample=44100,loudnorm=I=-14:TP=-1.5", "-ac", "2", "-c:v", "libx264", "-crf", "20", "-c:a", "aac", "-b:a", "160k", p)
+           f"scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,setsar=1,fps=24,drawtext=text='{label}':fontcolor=white:fontsize=44:box=1:boxcolor=black@0.6:boxborderw=12:x=(w-tw)/2:y=40",
+           "-af", "aresample=44100,loudnorm=I=-14:TP=-1.5", "-ar", "44100", "-ac", "2", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-c:a", "aac", "-b:a", "160k", p)
         parts.append(p)
     lst = Path(dst).with_suffix(".txt")
     lst.write_text("".join(f"file '{p.resolve()}'\n" for p in parts))

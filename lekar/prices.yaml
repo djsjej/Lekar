@@ -13,3 +13,4 @@ fal-ai/veo3.1/image-to-video:                      {unit: second, price: 0.40}  
 xai/grok-imagine-video/image-to-video:             {unit: second, price: 0.05}
 openai/sora-2:                                     {unit: second, price: 0.10}   # прайс OpenAI, 720p; сверить по счёту
 openai/sora-2-pro:                                 {unit: second, price: 0.30}
+veed/fabric-1.0:                                   {unit: second, price: 0.08}   # прайс fal без разбивки по разрешению
