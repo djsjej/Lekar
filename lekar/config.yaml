@@ -10,7 +10,7 @@ max_stretch: 0.12
 match_cuts: true            # подогнать паузы и темп под склейки оригинала (±0,3 с)
 subs:
   font: Montserrat SemiBold
-  size: 50                    # px при ширине 720
+  size: 66                    # Fontsize ASS; подобран по замеру ширины слов оригинала (50 давал буквы на ~30% мельче)
   center_y: 1005              # центр строки, из 1280
   shadow_offset: 2
   shadow_blur: 4
