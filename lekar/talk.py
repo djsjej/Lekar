@@ -5,7 +5,16 @@ from pathlib import Path
 from .core import Ledger, cost_of, download, fal_run, load_env, sh, upload
 
 VOICE = ("He speaks Russian in a warm, calm, slightly husky male voice of a 55-year-old man, "
-         "at a relaxed pace, clear articulation, lips in sync with the speech.")
+         "at a natural brisk pace of about two words per second with short pauses only between sentences, clear articulation, lips in sync with the speech.")
+
+
+def clip_seconds(line, wps=2.05, lead=0.6, allowed=None):
+    """Длина клипа под текст: модель растягивает речь на весь клип, поэтому клип не длиннее речи."""
+    import math, re
+    need = len(re.findall(r"\w+", line)) / wps + lead
+    if allowed:
+        return min((a for a in allowed if a >= need), default=max(allowed))
+    return math.ceil(need)
 
 
 def prompt(action, line):
