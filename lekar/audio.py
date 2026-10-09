@@ -141,7 +141,9 @@ def match_cuts(wav, words, slices, shots, out_dir, pad=(0.15, 0.8), tempo=(0.9, 
         p = max(target - speech / r, 0.05)
         piece = out_dir / f"m_{sl['id']}.wav"
         af = (f"atempo={r:.5f}," if abs(r - 1) > 0.002 else "") + f"apad=pad_dur={p:.3f}"
-        sh("ffmpeg", "-y", "-v", "error", "-i", wav, "-ss", f"{sl['start']:.3f}", "-t", f"{speech:.3f}",
+        # -ss/-t до -i: режем исходник, а уже потом темп. Если резать после фильтра, отсчёт идёт
+        # по замедленному звуку и кусок начинается раньше — так повторялся хвост «шага» на склейке.
+        sh("ffmpeg", "-y", "-v", "error", "-ss", f"{sl['start']:.3f}", "-t", f"{speech:.3f}", "-i", wav,
            "-af", af, "-t", f"{speech / r + p:.3f}", "-c:a", "pcm_s16le", piece)
         dur = speech / r + p
         for w in ws:
