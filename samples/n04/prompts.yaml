@@ -1,0 +1,77 @@
+# n04: первый ролик канала — знакомство. Нина Петровна за столом с кусочком торта и одной свечкой.
+pronoun: she
+subtitles: false   # канал без субтитров (решение пользователя 10.10.2026)
+voice: >-
+  She speaks Russian in a warm, soft, kind female voice of a 55-year-old village woman, gentle smile in the voice,
+  unhurried natural pace of about two words per second, clear articulation, lips in sync with the speech.
+# стол один на весь ролик: тарелочка с кусочком медовика, в нём ОДНА тонкая горящая свечка, чашка чая
+frames:
+  1: >-
+    Medium close shot: the woman sits at the wooden kitchen table facing the camera, smiling. In front of her on the
+    table: a small white plate with one slice of layered honey cake (medovik) with exactly one thin lit birthday
+    candle standing in it, and a cup of tea. Cozy early evening light: warm lamp light plus the soft glow of the
+    candle on her face.
+  2: >-
+    Closer shot from a slightly lower angle: the woman sits on a chair at the wooden table (seated, not standing),
+    smiling, and shows the cake in the foreground with an open palm. The cake: one triangular slice of layered honey
+    cake (medovik) on a small light ceramic plate, with exactly one thin lit candle stuck into the top of the slice
+    itself; no other candles, no candle holders, no berries, no whole cake. Cozy warm light.
+  3: >-
+    Medium shot: the woman sits at the wooden table and laughs warmly, one hand raised in a playful dismissive wave;
+    the small plate with the slice of honey cake with one lit candle and a cup of tea on the table in front of her.
+    Cozy warm evening light.
+  4: >-
+    Wider shot: the woman sits at the wooden table in her village kitchen, the white tiled stove visible behind her,
+    hands folded on the table; on the table the small plate with the slice of honey cake with one lit candle and a
+    cup of tea. Cozy warm evening light.
+  5: >-
+    Medium close shot: the woman, wearing her dark blue linen apron with the embroidered red rowan sprig over the
+    beige cardigan, sits at the table and leans slightly toward the camera, talking with lively
+    gestures of both hands; in front of her on the table: The cake: one triangular slice of layered honey cake
+    (medovik) on a small light ceramic plate, with exactly one thin lit candle stuck into the top of the slice
+    itself; no other candles, no candle holders, no berries, no whole cake. Cozy warm light.
+  6: >-
+    Medium close shot: the woman sits at the table and counts on her fingers, looking at the camera with a sly kind
+    smile; the small plate with the slice of honey cake with one lit candle in front of her. Cozy warm evening light.
+  7: >-
+    Medium close shot: the woman sits at the table with her right hand on her heart, gentle warm smile; behind her
+    shoulder the icon with the red lampada is clearly visible; the small plate with the slice of honey cake with one
+    lit candle in front of her. Cozy warm evening light.
+  8: >-
+    Close shot of the woman sitting at the table, face and shoulders large in the frame, warm smile; at the bottom
+    of the frame on the table: The cake: one triangular slice of layered honey cake (medovik) on a small light
+    ceramic plate, with exactly one thin lit candle stuck into the top of the slice itself; no other candles, no
+    candle holders, no berries, no whole cake. Cozy warm light, the candle glow on her face.
+  9: >-
+    Medium close shot: the woman sits at the table and leans toward the cake, smiling, about to blow out the candle.
+    The cake: one triangular slice of layered honey cake (medovik) on a small light ceramic plate, with exactly one
+    thin lit candle stuck into the top of the slice itself; no other candles, no candle holders, no berries, no
+    whole cake. Cozy warm light.
+grok:
+  1: >-
+    She sits and talks to the camera with a shy, happy smile. The candle flame keeps burning steadily. Only objects
+    already in the frame; no new objects appear.
+  2: >-
+    She shows the cake with her open palm and smiles. The candle flame keeps burning steadily; the cake and the plate
+    stay the same. Only objects already in the frame; no new objects appear.
+  3: >-
+    She laughs warmly and waves her hand playfully, then shrugs with a smile. The candle flame keeps burning
+    steadily. Only objects already in the frame; no new objects appear.
+  4: >-
+    She sits with folded hands and talks to the camera calmly and proudly. The candle flame keeps burning steadily.
+    Only objects already in the frame; no new objects appear.
+  5: >-
+    She leans a little toward the camera and talks with lively hand gestures. The candle flame keeps burning
+    steadily. Only objects already in the frame; no new objects appear.
+  6: >-
+    She counts on her fingers while talking, with a sly kind smile. The candle flame keeps burning steadily. Only
+    objects already in the frame; no new objects appear.
+  7: >-
+    She keeps her hand on her heart and talks softly, warmly. The candle flame keeps burning steadily. Only objects
+    already in the frame; no new objects appear.
+  8: >-
+    She looks into the camera and talks warmly, a little tilt of the head. The candle glow flickers softly on her
+    face. Only objects already in the frame; no new objects appear.
+  9: >-
+    She says the words, then leans to the cake and gently blows out the candle; the flame goes out and a thin wisp of
+    smoke rises; she looks at the camera and smiles. Only objects already in the frame; no new objects appear.

@@ -1,0 +1,74 @@
+[
+ {
+  "id": 1,
+  "orig_start": 0,
+  "orig_end": 5,
+  "kind": "talking",
+  "text": "Мне пятьдесят пять, и сегодня я завела инстаграм.",
+  "speech": "on"
+ },
+ {
+  "id": 2,
+  "orig_start": 5,
+  "orig_end": 10,
+  "kind": "talking",
+  "text": "Первый ролик — вот, даже тортик по такому случаю.",
+  "speech": "on"
+ },
+ {
+  "id": 3,
+  "orig_start": 10,
+  "orig_end": 17,
+  "kind": "talking",
+  "text": "Дети хихикают: мама, ну куда тебе? А я думаю — а почему бы и нет?",
+  "speech": "on"
+ },
+ {
+  "id": 4,
+  "orig_start": 17,
+  "orig_end": 22,
+  "kind": "talking",
+  "text": "Сорок лет кормлю семью вкусно, сытно и недорого.",
+  "speech": "on"
+ },
+ {
+  "id": 5,
+  "orig_start": 22,
+  "orig_end": 27,
+  "kind": "talking",
+  "text": "Буду показывать, как из простых продуктов приготовить настоящую вкуснятину.",
+  "speech": "on"
+ },
+ {
+  "id": 6,
+  "orig_start": 27,
+  "orig_end": 32,
+  "kind": "talking",
+  "text": "А в конце каждого ролика честно посчитаю, сколько потратила.",
+  "speech": "on"
+ },
+ {
+  "id": 7,
+  "orig_start": 32,
+  "orig_end": 36,
+  "kind": "talking",
+  "text": "В пост — постные рецепты, по церковному календарю.",
+  "speech": "on"
+ },
+ {
+  "id": 8,
+  "orig_start": 36,
+  "orig_end": 41,
+  "kind": "talking",
+  "text": "Меня зовут Нина Петровна. Ну что, родненькие, будем знакомы?",
+  "speech": "on"
+ },
+ {
+  "id": 9,
+  "orig_start": 41,
+  "orig_end": 45,
+  "kind": "talking",
+  "text": "Ну, с Богом!",
+  "speech": "on"
+ }
+]
