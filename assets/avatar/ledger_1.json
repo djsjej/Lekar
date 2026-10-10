@@ -1,0 +1,13 @@
+{
+ "calls": [
+  {
+   "tag": "avatar 1",
+   "endpoint": "fal-ai/nano-banana-pro/edit",
+   "request_id": "01a1239f-d0b7-7860-b468-b5a71a05ec55",
+   "units": 1,
+   "cost": 0.15,
+   "seconds": 74.2
+  }
+ ],
+ "steps": {}
+}
