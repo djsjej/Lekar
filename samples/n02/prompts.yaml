@@ -1,0 +1,76 @@
+# n02: «Чебуреки из лаваша — мужу на работу». Будни, не пост.
+pronoun: she
+subtitles: false   # канал без субтитров (решение пользователя 10.10.2026)
+voice: >-
+  She speaks Russian in a warm, soft, kind female voice of a 55-year-old village woman, gentle smile in the voice,
+  unhurried natural pace of about two words per second, clear articulation, lips in sync with the speech.
+# что такое «лавашный чебурек» — одинаково во всех кадрах, чтобы еда не превратилась в пирожки/блины
+frames:
+  1: >-
+    Close-up food shot on the wooden table: an open rectangular glass lunch container with three lavash chebureks
+    (flat rectangular pockets of thin lavash flatbread folded in half over minced meat, fried golden-brown, crispy
+    blistered surface; not pies, not pancakes, not pastries); one of them cut in half showing juicy minced-meat
+    filling; a fork beside the container. The woman is only partly visible in the background, out of focus.
+  2: >-
+    Medium shot: the woman stands behind the wooden table, smiling at the camera. On the table: a bowl of raw minced
+    meat, a folded sheet of thin lavash flatbread, one onion and one egg.
+  3: >-
+    Medium close shot: the woman mixes raw minced meat with finely chopped onion in a large bowl with a spoon.
+  4: >-
+    Medium close shot: on a wooden board lies one square piece of thin lavash flatbread; the woman spreads a thin
+    layer of raw minced meat with a spoon over one half of it; a small stack of cut lavash squares beside the board.
+  5: >-
+    Medium close shot from the chest up, her face visible and smiling: on a wooden board in front of her lies one
+    small square of thin lavash folded in half into a small rectangle about the size of a palm, raw minced meat
+    peeking at the edges; she presses its edges with her fingertips; a small bowl of beaten egg with a pastry brush
+    stands next to the board.
+  6: >-
+    Medium shot: the woman stands at an old enamel stove with a black cast-iron frying pan in which four flat
+    rectangular lavash chebureks lie side by side, separate, golden-brown and crispy; she holds a spatula above the
+    pan.
+  7: >-
+    Close-up: the woman holds one golden crispy rectangular lavash cheburek broken in half over a plate, juicy
+    minced-meat filling visible inside, her smiling face above.
+  8: >-
+    Medium shot: the woman stands behind the table; in front of her an open rectangular glass lunch container with
+    three golden crispy rectangular lavash chebureks inside and its lid in her hands.
+  9: >-
+    Medium shot from the waist up: the woman stands behind the table; in front of her on the table a round plate
+    with eight flat rectangular golden-brown crispy lavash chebureks lying flat in a neat low pile (not standing on
+    edge; not pies, not pancakes); she counts on her fingers, looking at the camera.
+  10: >-
+    Medium shot: the woman holds the plate of golden rectangular lavash chebureks toward the camera with both hands,
+    warm smile.
+grok:
+  1: >-
+    Slow push-in feeling, a light wisp of steam rises from the cut cheburek. Nothing moves on the table; the
+    chebureks keep their shape and number. Only objects already in the frame; no new objects appear.
+  2: >-
+    She greets the camera warmly with a small wave of the hand and smiles. Only objects already in the frame; no
+    new objects appear.
+  3: >-
+    She slowly stirs the minced meat with the spoon in the bowl. Only objects already in the frame; no new objects
+    appear.
+  4: >-
+    She slowly smooths the thin layer of minced meat on one half of the lavash square with the back of the spoon.
+    The lavash stays one flat square. Only objects already in the frame; no new objects appear.
+  5: >-
+    She presses along the edges of the folded lavash with her fingertips. The folded lavash stays one rectangle,
+    nothing else changes. Only objects already in the frame; no new objects appear.
+  6: >-
+    She holds the spatula still just above the pan without touching the chebureks and looks at the camera,
+    smiling. The chebureks lie still, each one separate, the same number and shape as at the start; they never
+    merge, never flip, never change color. Only a light sizzle and a thin wisp of steam. Only objects already in
+    the frame; no new objects appear.
+  7: >-
+    She holds the two halves of the cheburek still and looks at the camera, a little steam rises from the filling.
+    The halves keep their shape. Only objects already in the frame; no new objects appear.
+  8: >-
+    She slowly puts the lid on the lunch container and presses it closed, then looks at the camera. The chebureks
+    inside stay the same. Only objects already in the frame; no new objects appear.
+  9: >-
+    She counts on her fingers while talking to the camera, small natural head movements. The plate stays still.
+    Only objects already in the frame; no new objects appear.
+  10: >-
+    She offers the plate toward the camera with a warm smile. The chebureks stay on the plate, same number and
+    shape. Only objects already in the frame; no new objects appear.

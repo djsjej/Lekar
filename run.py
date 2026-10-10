@@ -244,7 +244,9 @@ class Run:
         lst.write_text("".join(f"file '{x.resolve()}'\n" for x in auds))
         voice = g / "voice.wav"
         sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c:a", "pcm_s16le", voice)
-        ass = video.make_ass(words, g / "subs.ass", self.cfg)
+        pr = self.sdir / "prompts.yaml"                     # subtitles: false — ролик без субтитров (чек цен остаётся)
+        subs = yaml.safe_load(pr.read_text()).get("subtitles", True) if pr.exists() else True
+        ass = video.make_ass(words if subs else [], g / "subs.ass", self.cfg)
         check = self.sdir / "check.json"
         if check.exists():                                  # чек цен поверх плана с подсчётом
             c = json.loads(check.read_text())
