@@ -158,14 +158,18 @@ def main():
                     remote("get", f"work/{a.sample}/A/frame_{s['id']}.png", str(frame))
             act = prompts["grok"][s["id"]] + (" He continues the same speech from the previous moment." if u["chain"] else "")
             tag = f"G: план {u['key']} Grok {u['sec']} с"
-            lost = [c for c in ledger.data["calls"] if c["tag"] == tag and c.get("error")]
+            lost = [c for c in ledger.data["calls"] if c["tag"] == tag and c.get("error") and not c.get("lost")]
             if lost and u["key"] not in redo:          # оплаченный, но не забранный клип — забрать, не платить снова
                 rid = lost[-1]["request_id"]
                 print(f"  план {u['key']}: забираю оплаченный результат {rid}")
-                out_ = _req("GET", f"https://queue.fal.run/{EP.split('/image-to-video')[0]}/requests/{rid}", timeout=300)
-                download(out_["video"]["url"], clip); lost[-1].pop("error"); ledger.save()
-                prev = clip
-                continue
+                try:
+                    out_ = _req("GET", f"https://queue.fal.run/{EP.split('/image-to-video')[0]}/requests/{rid}", timeout=300)
+                    download(out_["video"]["url"], clip); lost[-1].pop("error"); ledger.save()
+                    prev = clip
+                    continue
+                except RuntimeError as e:           # fal не отдаёт (запрос шёл при заблокированном аккаунте) — генерируем заново
+                    print(f"  план {u['key']}: результат недоступен ({str(e)[-60:]}), генерирую заново")
+                    lost[-1]["error"] = "lost: " + lost[-1]["error"][:200]; lost[-1]["lost"] = True; ledger.save()
             r = fal_run(ledger, EP, dict(image_url=upload(frame), prompt=prompt(dict(s, text=u["text"]), act),
                                          duration=u["sec"], aspect_ratio="9:16", resolution="720p"),
                         u["sec"], f"G: план {u['key']} Grok {u['sec']} с")
