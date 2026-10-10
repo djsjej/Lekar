@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 import yaml  # noqa: E402
 from lekar import talk  # noqa: E402
-from lekar.core import Ledger, cost_of, download, duration, fal_run, load_env, upload  # noqa: E402
+from lekar.core import Ledger, _req, cost_of, download, duration, fal_run, load_env, upload  # noqa: E402
 
 EP = "xai/grok-imagine-video/image-to-video"
 VOICE = talk.VOICE
@@ -157,6 +157,15 @@ def main():
                 if not frame.exists():
                     remote("get", f"work/{a.sample}/A/frame_{s['id']}.png", str(frame))
             act = prompts["grok"][s["id"]] + (" He continues the same speech from the previous moment." if u["chain"] else "")
+            tag = f"G: план {u['key']} Grok {u['sec']} с"
+            lost = [c for c in ledger.data["calls"] if c["tag"] == tag and c.get("error")]
+            if lost and u["key"] not in redo:          # оплаченный, но не забранный клип — забрать, не платить снова
+                rid = lost[-1]["request_id"]
+                print(f"  план {u['key']}: забираю оплаченный результат {rid}")
+                out_ = _req("GET", f"https://queue.fal.run/{EP.split('/image-to-video')[0]}/requests/{rid}", timeout=300)
+                download(out_["video"]["url"], clip); lost[-1].pop("error"); ledger.save()
+                prev = clip
+                continue
             r = fal_run(ledger, EP, dict(image_url=upload(frame), prompt=prompt(dict(s, text=u["text"]), act),
                                          duration=u["sec"], aspect_ratio="9:16", resolution="720p"),
                         u["sec"], f"G: план {u['key']} Grok {u['sec']} с")
