@@ -36,13 +36,13 @@ def main():
     errs = []
 
     def one(k):
-        e, f = edits[k], out / f"frame_{k}.png"
+        e = edits[k]; f = out / f"frame_{e.get('frame', k)}.png"   # frame: — вторая правка того же кадра (ключ 1b)
         try:
             urls = [upload(f)] + [upload(ROOT / r) for r in e.get("refs", [])]
-            r = fal_run(Ledger(out / f"ledger_frame_{k}.json"), EP,
+            r = fal_run(Ledger(out / f"ledger_frame_{e.get('frame', k)}.json"), EP,
                         dict(prompt=KEEP + e["prompt"] + " No text on the image.", image_urls=urls, aspect_ratio="9:16",
                              resolution="2K", output_format="png", seed=e.get("seed", 7)), 1, f"{a.sample}: правка кадра {k}")
-            shutil.copy(f, out / f"frame_{k}_before_edit.png")
+            shutil.copy(f, out / f"{f.stem}_before_{k}.png")
             download(r["images"][0]["url"], f)
             done[str(k)] = e["prompt"]
         except Exception as ex:
@@ -53,8 +53,9 @@ def main():
     if errs:
         print("  ошибки:", errs)
     for k in todo:
-        subprocess.run([sys.executable, str(ROOT / "tools/remote.py"), "put", str(out / f"frame_{k}.png"),
-                        f"work/{a.sample}/A/frame_{k}.png"], capture_output=True)
+        n = edits[k].get("frame", k)
+        subprocess.run([sys.executable, str(ROOT / "tools/remote.py"), "put", str(out / f"frame_{n}.png"),
+                        f"work/{a.sample}/A/frame_{n}.png"], capture_output=True)
     print("  готово:", out)
 
 

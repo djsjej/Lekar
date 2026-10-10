@@ -10,3 +10,9 @@
     over her beige cardigan and cream blouse she now wears the dark blue linen apron with the small embroidered red
     rowan sprig on the chest, exactly like in the second image.
   refs: [assets/heroine/sheet_1.png]
+# правка 1 (кошка, кружка) уже сделана; бантик — поверх неё
+1b:
+  frame: 1
+  prompt: >-
+    the grey tabby cat in her arms now wears a cute festive satin bow tied on its neck — a small bright red bow with
+    two short ribbon tails, neat and clearly visible. Nothing else changes.
