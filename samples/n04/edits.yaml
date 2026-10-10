@@ -1,0 +1,12 @@
+# Точечные правки кадров n04 (tools/frame_edit.py). Первая картинка — сам кадр, дальше refs.
+1:
+  prompt: >-
+    she now holds a fluffy grey tabby cat in her arms, the cat calm and cozy against her chest, its face toward the
+    camera; her hands hold the cat. The cup of tea on the table becomes the brown glazed ceramic mug from the second
+    image (same color and shape). The cake slice with the one lit candle stays exactly as it is.
+  refs: [work/n04/A/frame_3.png]
+5:
+  prompt: >-
+    over her beige cardigan and cream blouse she now wears the dark blue linen apron with the small embroidered red
+    rowan sprig on the chest, exactly like in the second image.
+  refs: [assets/heroine/sheet_1.png]

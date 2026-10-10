@@ -21,6 +21,7 @@
 ```bash
 python3 tools/dup_prepare.py 06 --yadisk <ссылка> --path /<файл>.mp4   # дубликат: разметка оригинала
 python3 tools/hero_frames.py 06 --yes                                   # кадры с нашим героем
+python3 tools/frame_edit.py n04 --yes                                   # точечная правка кадра (samples/<id>/edits.yaml)
 python3 tools/grok_build.py 01 --shots 1 2 3          # расчёт; с --yes — генерация, расшифровка, загрузка
 python3 tools/remote.py run 01 assemble_g && python3 tools/remote.py wait 01
 python3 tools/remote.py run 01 share && python3 tools/remote.py wait 01     # 1080 ≤ 29 МБ для чата
