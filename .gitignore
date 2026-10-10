@@ -4,3 +4,8 @@ fonts/*.ttf
 samples/*/original.mp4
 __pycache__/
 *.pyc
+
+# кеш ссылок загрузки на fal (lekar.core.upload)
+*.png.url
+*.mp4.url
+*.jpg.url
