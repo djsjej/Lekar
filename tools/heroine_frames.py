@@ -27,7 +27,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("sample"); ap.add_argument("--yes", action="store_true"); ap.add_argument("--redo", nargs="*", default=[])
     a = ap.parse_args()
-    frames = yaml.safe_load((ROOT / "samples" / a.sample / "prompts.yaml").read_text())["frames"]
+    pr = yaml.safe_load((ROOT / "samples" / a.sample / "prompts.yaml").read_text())
+    frames, common = pr["frames"], pr.get("common", COMMON)   # common: своя одежда/место съёмки на ролик
     out = ROOT / "work" / a.sample / "A"; out.mkdir(parents=True, exist_ok=True)
     todo = [k for k in frames if not (out / f"frame_{k}.png").exists() or str(k) in a.redo]
     print(f"  кадров: {len(todo)} × 0,15 $ = {cost_of(EP, len(todo)):.2f} $")
@@ -40,7 +41,7 @@ def main():
         with sem:
             try:
                 r = fal_run(Ledger(out / f"ledger_frame_{k}.json"), EP,
-                            dict(prompt=frames[k] + COMMON, image_urls=refs, aspect_ratio="9:16", resolution="2K",
+                            dict(prompt=frames[k] + " " + common.strip(), image_urls=refs, aspect_ratio="9:16", resolution="2K",
                                  output_format="png", seed=40 + int(k)), 1, f"{a.sample}: кадр {k}")
                 download(r["images"][0]["url"], out / f"frame_{k}.png")
             except Exception as e:

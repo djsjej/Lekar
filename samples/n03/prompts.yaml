@@ -1,0 +1,90 @@
+# n03: «Салатик на вечер, чтобы не располнеть». Новая одежда и другие уголки того же дома.
+pronoun: she
+subtitles: false   # канал без субтитров (решение пользователя 10.10.2026)
+voice: >-
+  She speaks Russian in a warm, soft, kind female voice of a 55-year-old village woman, gentle smile in the voice,
+  unhurried natural pace of about two words per second, clear articulation, lips in sync with the speech.
+# одежда на этот ролик и дом; место съёмки — в описании каждого кадра
+common: >-
+  The woman is the woman from the first image: same face, same light-brown hair with grey in a neat bun, but today
+  she wears different clothes: a soft sage-green knitted jumper with a round neck and a long dark-grey skirt, with
+  the same dark blue linen apron with the small embroidered red rowan sprig over them. The place is another room of
+  the same old wooden village house as in the second image (log walls, white window frames, warm wooden floor), not
+  the stove corner. Vertical 9:16, photorealistic smartphone photo, warm natural window daylight, real home look.
+  No text, captions or logos on the image.
+frames:
+  1: >-
+    Close-up food shot: a white bowl of fresh salad of finely shredded white cabbage, grated raw carrot and grated
+    raw beetroot with chopped boiled egg, dressed with a light white kefir dressing, on a round table covered with a
+    white embroidered linen tablecloth by a window with lace curtains. Nobody in the frame.
+  2: >-
+    Medium shot in the living room by a window with lace curtains and a wooden sideboard with plates behind: the
+    woman stands on the left, smiling at the camera, one hand resting on her own tummy. Next to her on the right
+    stands a second woman, about 45, obese and heavy all over (not pregnant): plus-size XXL figure, round full face
+    with chubby cheeks and a double chin, thick arms and legs, wide shoulders and hips, soft rolls at the waist, a
+    loose plain dark-blue home dress, short dark-brown hair, slippers on her feet, hands
+    lowered, calm friendly face, silent. Both full figures visible from the knees
+    up.
+  3: >-
+    Medium close shot at a long wooden kitchen worktop along the log wall under a window with red geraniums on the
+    sill: the woman squeezes a heap of finely shredded white cabbage with salt in a large enamel bowl with both
+    hands; a knife and half a cabbage on a board beside.
+  4: >-
+    Medium close shot at the same wooden worktop under the window with red geraniums: in front of the woman a large
+    enamel bowl with shredded cabbage, a mound of grated orange carrot and a mound of grated dark-red beetroot on
+    top; a box grater lies beside the bowl; she holds a spoon.
+  5: >-
+    Medium close shot at the same wooden worktop under the window with red geraniums: on a small board two boiled
+    eggs cut into cubes; the woman holds a knife, smiling at the camera; the large enamel bowl of shredded
+    vegetables beside.
+  6: >-
+    Medium shot at a round table with a white embroidered linen tablecloth by a window with lace curtains: the woman
+    sits at the table facing the camera, her face fully visible and smiling, and stirs a white kefir dressing in a
+    small glass bowl with a spoon; a carton of kefir, a small
+    jar of mustard and a garlic clove on the table.
+  7: >-
+    Medium shot at the same round table with the embroidered tablecloth: the woman sits and gently mixes the salad in
+    a large white bowl with two wooden spoons; the salad is shredded cabbage, grated carrot and beetroot, chopped egg,
+    white dressing.
+  8: >-
+    Medium close shot at the same round table with the embroidered tablecloth: the woman sits with a small plate of
+    the cabbage, carrot and beetroot salad and holds a fork with a little salad near her mouth, smiling.
+  9: >-
+    Medium shot from the waist up: the woman stands by the wooden sideboard in the living room, a big white bowl
+    of the same salad (finely shredded white cabbage with grated orange carrot, grated dark-red beetroot and chopped
+    boiled egg; no green leaves) on the sideboard's top beside her, counting on her fingers, looking at the camera.
+  10: >-
+    Medium shot: the woman stands by the window with lace curtains holding the big white bowl of the cabbage, carrot
+    and beetroot salad toward the camera with both hands, warm smile.
+grok:
+  1: >-
+    Slow push-in feeling toward the salad bowl, a lace curtain moves slightly in the background. The salad stays the
+    same. Only objects already in the frame; no new objects appear.
+  2: >-
+    The woman on the left talks to the camera and gently pats her own tummy with her hand once or twice, with a kind
+    smile. The second woman on the right does not speak, her mouth stays closed, she only stands still and smiles a
+    little. Only objects and people already in the frame; no new people appear.
+  3: >-
+    She keeps squeezing the shredded cabbage with salt in the bowl with both hands, slowly. Only objects already in
+    the frame; no new objects appear.
+  4: >-
+    She looks at the bowl with the grated carrot and beetroot, then at the camera, holding the spoon still. Nothing in
+    the bowl changes. Only objects already in the frame; no new objects appear.
+  5: >-
+    She slides the chopped egg cubes from the board into the bowl with the knife blade, then looks at the camera.
+    Only objects already in the frame; no new objects appear.
+  6: >-
+    She slowly stirs the white dressing in the small glass bowl with the spoon. Only objects already in the frame; no
+    new objects appear.
+  7: >-
+    She slowly mixes the salad with the two wooden spoons, the salad stays in the bowl. Only objects already in the
+    frame; no new objects appear.
+  8: >-
+    She takes the bite of salad from the fork, chews with pleasure and smiles at the camera. Only objects already in
+    the frame; no new objects appear.
+  9: >-
+    She counts on her fingers while talking to the camera, small natural head movements. The bowl stays still. Only
+    objects already in the frame; no new objects appear.
+  10: >-
+    She offers the bowl toward the camera with a warm smile. The salad stays in the bowl. Only objects already in the
+    frame; no new objects appear.
