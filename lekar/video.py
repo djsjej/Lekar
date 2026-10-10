@@ -145,6 +145,34 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     return dst
 
 
+def add_check(ass, check, t0, t1, cfg):
+    """Чек цен поверх кадра (сетка 720×1280): плашка в верхней половине, строки появляются по одной,
+    итог — крупнее. check.json: {"shot": 8, "title": "Считаем", "items": [["Куриное филе 500 г", "200 ₽"], ...],
+    "total": "Итого 245 ₽", "note": "12 котлет · ≈60 ₽ на человека", "step": 0.9}."""
+    font = cfg["subs"]["font"]
+    items = check["items"]
+    step = check.get("step", 0.9)
+    y0, lh = check.get("y", 525), 52
+    h = 80 + lh * len(items) + 140
+    style = (f"Style: CK,{font},38,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,204\n"
+             f"Style: CT,{font},52,&H0055D7FF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,0,0,7,0,0,0,204\n"
+             f"Style: CB,{font},10,&H50000000,&H50000000,&H50000000,&H50000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,204\n")
+    ev = [f"Dialogue: 2,{_ts(t0)},{_ts(t1)},CB,,0,0,0,,{{\\pos(40,{y0 - 20})\\p1\\1c&H101010&\\1a&H50&\\fad(250,0)}}"
+          f"m 0 0 l 640 0 640 {h} 0 {h}{{\\p0}}"]
+    ev.append(f"Dialogue: 3,{_ts(t0)},{_ts(t1)},CK,,0,0,0,,{{\\pos(70,{y0})\\fs44\\b1\\fad(250,0)}}{check.get('title', 'Считаем')}")
+    for i, (name, price) in enumerate(items):
+        a = t0 + 0.4 + i * step; y = y0 + 80 + i * lh
+        ev.append(f"Dialogue: 3,{_ts(a)},{_ts(t1)},CK,,0,0,0,,{{\\pos(70,{y})\\fad(200,0)}}{name}")
+        ev.append(f"Dialogue: 3,{_ts(a)},{_ts(t1)},CK,,0,0,0,,{{\\an9\\pos(650,{y})\\fad(200,0)}}{price}")
+    a = t0 + 0.4 + len(items) * step + 0.3; y = y0 + 80 + len(items) * lh + 10
+    ev.append(f"Dialogue: 3,{_ts(a)},{_ts(t1)},CT,,0,0,0,,{{\\pos(70,{y})\\fad(200,0)}}{check['total']}")
+    if check.get("note"):
+        ev.append(f"Dialogue: 3,{_ts(a + 0.5)},{_ts(t1)},CK,,0,0,0,,{{\\pos(70,{y + 66})\\fs34\\fad(200,0)}}{check['note']}")
+    text = Path(ass).read_text()
+    text = text.replace("\n[Events]", "\n" + style.rstrip("\n") + "\n\n[Events]", 1) if "Style: CK" not in text else text
+    Path(ass).write_text(text.rstrip("\n") + "\n" + "\n".join(ev) + "\n")
+
+
 # ---------- сборка ----------
 
 def loudnorm_filter(wav, target=-14.0):

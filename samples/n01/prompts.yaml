@@ -1,0 +1,62 @@
+# Пилот канала Нины Петровны: «Котлетки из курочки с капусткой».
+pronoun: she
+voice: >-
+  She speaks Russian in a warm, soft, kind female voice of a 55-year-old village woman, gentle smile in the voice,
+  unhurried natural pace of about two words per second, clear articulation, lips in sync with the speech.
+frames:
+  1: >-
+    Close-up food shot: a white plate with a tall pile of golden fried chicken patties, steam rising, on the
+    wooden table of the same village kitchen, the woman's hands at the edge of the frame placing one more patty on
+    top.
+  2: >-
+    Medium shot: the woman stands behind the wooden table with a chicken breast fillet on a board, a quarter of
+    white cabbage and an old manual meat grinder clamped to the table, smiling at the camera.
+  3: >-
+    Medium shot: the woman turns the handle of the old manual meat grinder clamped to the table, feeding pieces of
+    chicken fillet and cabbage into it; minced mixture comes out into a bowl.
+  4: >-
+    Medium close shot: the woman adds a finely chopped onion, cracks an egg and adds two spoons of semolina into
+    the bowl of minced chicken and cabbage, holding a spoon.
+  5: >-
+    Medium shot: the woman stands at an old enamel stove with a cast-iron frying pan where several round chicken
+    patties are frying in a little oil, turning one with a spatula.
+  6: >-
+    Close-up: on a plate the woman breaks a fried chicken patty in half with a fork, showing a juicy light inside;
+    her face visible above, smiling.
+  7: >-
+    Medium close shot: the woman tastes a piece of chicken patty from a fork at the table, eyes half closed with
+    pleasure.
+  8: >-
+    Medium shot from the waist up: the woman stands behind the table with the plate of patties in front of her,
+    counting on her fingers, looking at the camera.
+  9: >-
+    Medium shot: the woman holds the plate of golden chicken patties toward the camera with both hands, warm
+    smile.
+grok:
+  1: >-
+    Slow push-in feeling, steam rises from the hot patties, her hand places one more patty on the pile. Only
+    objects already in the frame; no new objects appear.
+  2: >-
+    She greets the camera warmly with a small wave of the hand and smiles. Only objects already in the frame; no
+    new objects appear.
+  3: >-
+    She turns the handle of the manual meat grinder and feeds pieces of chicken and cabbage into it, minced
+    mixture comes out into the bowl. Only objects already in the frame; no new objects appear.
+  4: >-
+    She cracks the egg into the bowl, adds semolina with a spoon and stirs the mince. Only objects already in the
+    frame; no new objects appear.
+  5: >-
+    She turns a patty over with a spatula, the patties sizzle softly in the pan. Only objects already in the
+    frame; no new objects appear.
+  6: >-
+    She breaks the patty in half with the fork, juice glistens inside, she looks up at the camera. Only objects
+    already in the frame; no new objects appear.
+  7: >-
+    She tastes the piece of patty, closes her eyes with pleasure and smiles. Only objects already in the frame; no
+    new objects appear.
+  8: >-
+    She counts on her fingers while talking to the camera, small natural head movements. Only objects already in
+    the frame; no new objects appear.
+  9: >-
+    She offers the plate toward the camera with a warm smile. Only objects already in the frame; no new objects
+    appear.

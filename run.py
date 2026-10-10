@@ -245,6 +245,12 @@ class Run:
         voice = g / "voice.wav"
         sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c:a", "pcm_s16le", voice)
         ass = video.make_ass(words, g / "subs.ass", self.cfg)
+        check = self.sdir / "check.json"
+        if check.exists():                                  # чек цен поверх плана с подсчётом
+            c = json.loads(check.read_text())
+            k = next(i for i, p in enumerate(plan) if str(p["id"]) == str(c["shot"]))
+            t0 = (cuts[k - 1] if k else 0.0) + c.get("delay", 0.6)
+            video.add_check(ass, c, t0, cuts[k], self.cfg)
         (g / "words.json").write_text(json.dumps(words, ensure_ascii=False))
         first, last = plan[0].get("shot", plan[0]["id"]), plan[-1].get("shot", plan[-1]["id"])
         ids = f"_p{first}-{last}"

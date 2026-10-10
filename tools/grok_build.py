@@ -22,15 +22,21 @@ EP = "xai/grok-imagine-video/image-to-video"
 VOICE = talk.VOICE
 
 
+# голос по умолчанию — учебный герой; канал героини задаёт свой в prompts.yaml → voice, pronoun: she
+PERSONA = dict(pronoun="he", voice=None)
+
+
 def prompt(shot, action):
     line = shot["text"]
+    he = PERSONA["pronoun"] == "he"
+    sub, pos, who = ("He", "his", "man") if he else ("She", "her", "woman")
+    voice = PERSONA["voice"] or VOICE
     if shot.get("speech", "on") == "voiceover":
-        return (f"{action} He does not speak on camera, his mouth stays closed. An off-screen voice-over says in Russian: "
-                f"\"{line}\" The voice-over is the same man: warm, calm, slightly husky male voice of a 55-year-old, "
-                "natural brisk pace of about 2.3 words per second. No music, no other sounds. No text on screen. Static camera.")
-    return (f"{action} While doing this he talks to the camera and says in Russian: \"{line}\" {VOICE} "
-            "Speak at a natural brisk pace of about 2.3 words per second so the whole line fits the clip. "
-            "Only his voice, no music, no background sounds. No subtitles or text on screen. Static camera.")
+        return (f"{action} {sub} does not speak on camera, {pos} mouth stays closed. An off-screen voice-over says in Russian: "
+                f"\"{line}\" The voice-over is the same {who}: {voice} No music, no other sounds. No text on screen. Static camera.")
+    return (f"{action} While doing this {sub.lower()} talks to the camera and says in Russian: \"{line}\" {voice} "
+            "Speak at a natural pace of about 2.2 words per second so the whole line fits the clip. "
+            f"Only {pos} voice, no music, no background sounds. No subtitles or text on screen. Static camera.")
 
 
 def whisper(path):
@@ -110,6 +116,7 @@ def main():
     sdir = ROOT / "samples" / a.sample
     shots = json.loads((sdir / "shots.json").read_text())
     prompts = yaml.safe_load((sdir / "prompts.yaml").read_text())
+    PERSONA.update(pronoun=prompts.get("pronoun", "he"), voice=prompts.get("voice"))
     part = [s for s in shots if not a.shots or s["id"] in a.shots]
     out = ROOT / "work" / a.sample / "G"; out.mkdir(parents=True, exist_ok=True)
     frames = ROOT / "work" / a.sample / "A"
