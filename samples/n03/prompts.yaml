@@ -14,10 +14,6 @@ common: >-
   No text, captions or logos on the image.
 frames:
   1: >-
-    Close-up food shot: a white bowl of fresh salad of finely shredded white cabbage, grated raw carrot and grated
-    raw beetroot with chopped boiled egg, dressed with a light white kefir dressing, on a round table covered with a
-    white embroidered linen tablecloth by a window with lace curtains. Nobody in the frame.
-  2: >-
     Medium shot in the living room by a window with lace curtains and a wooden sideboard with plates behind: the
     woman stands on the left, smiling at the camera, one hand resting on her own tummy. Next to her on the right
     stands a second woman, about 45, obese and heavy all over (not pregnant): plus-size XXL figure, round full face
@@ -25,6 +21,9 @@ frames:
     loose plain dark-blue home dress, short dark-brown hair, slippers on her feet, hands
     lowered, calm friendly face, silent. Both full figures visible from the knees
     up.
+  2: >-
+    Medium shot in the living room by the same window with lace curtains and the wooden sideboard with plates
+    behind: the woman stands alone, smiling at the camera, one hand resting on her own tummy, seen from the knees up.
   3: >-
     Medium close shot at a long wooden kitchen worktop along the log wall under a window with red geraniums on the
     sill: the woman squeezes a heap of finely shredded white cabbage with salt in a large enamel bowl with both
@@ -58,12 +57,13 @@ frames:
     and beetroot salad toward the camera with both hands, warm smile.
 grok:
   1: >-
-    Slow push-in feeling toward the salad bowl, a lace curtain moves slightly in the background. The salad stays the
-    same. Only objects already in the frame; no new objects appear.
+    The woman on the left talks to the camera calmly, in her usual low warm unhurried voice, not excited, and gently
+    pats her own tummy with her hand, with a kind smile. The
+    second woman on the right does not speak, her mouth stays closed; she smiles warmly and waves her hand at the
+    camera. Only objects and people already in the frame; no new people appear.
   2: >-
-    The woman on the left talks to the camera and gently pats her own tummy with her hand once or twice, with a kind
-    smile. The second woman on the right does not speak, her mouth stays closed, she only stands still and smiles a
-    little. Only objects and people already in the frame; no new people appear.
+    She greets the camera warmly, then gently pats her own tummy with a kind smile. Only objects already in the
+    frame; no new objects or people appear.
   3: >-
     She keeps squeezing the shredded cabbage with salt in the bowl with both hands, slowly. Only objects already in
     the frame; no new objects appear.
